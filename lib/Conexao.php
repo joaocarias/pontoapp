@@ -11,7 +11,7 @@ use Config\config;
  */
 class Conexao {
     private static $local = 'localhost';
-    private static $bdname = 'bd_mahina_slim';
+    private static $bdname = 'bd_ponto_app';
     private static $user = 'root'  ;
     private static $pass = 'root';
     

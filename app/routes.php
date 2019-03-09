@@ -10,6 +10,7 @@ $app->get('/empresa/index','App\Controllers\EmpresaController:index');
 $app->get('/empresa/cadastro','App\Controllers\EmpresaController:cadastro');
 $app->post('/empresa/cadastrar','App\Controllers\EmpresaController:cadastrar');
 $app->get('/empresa/edicao','App\Controllers\EmpresaController:edicao');
+$app->post('/empresa/editar','App\Controllers\EmpresaController:editar');
 
 //Site
 $app->get('/', 'App\Controllers\HomeController:index');

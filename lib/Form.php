@@ -180,6 +180,10 @@ public static function getSelectUF($nome, $label, $tamanho, $required, $value){
         
     }    
     
+    public static function getHidden($name, $value){
+        return '<input type="hidden" name="'.$name.'" value="'.$value.'">';
+    }
+    
 }
 
 

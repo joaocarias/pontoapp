@@ -1,12 +1,12 @@
 <?php
 
-define('PREFIX', 'MahinaSlim');
+define('PREFIX', 'PontoApp');
 define('PATH', 'http://localhost:8082');
 
-define('TITULO_SISTEMA_COMPLETO','Mahira Slim');
-define('NOME_COMPANIA','Mahira Slim');
-define('TITULO_REDUZIDO', 'Mahira');
-define('SIGLA','MS');
+define('TITULO_SISTEMA_COMPLETO','Ponto App');
+define('NOME_COMPANIA','Ponto App');
+define('TITULO_REDUZIDO', 'Ponto');
+define('SIGLA','PA');
 
 define('EMPRESA', 'João Carias de França');
 define('LOGRADOURO', 'Rua Marechal Floriano Peixoto');
