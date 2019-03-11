@@ -49,6 +49,7 @@
                         . Form::getInput("text", "tx_celular", "Celular", "(99) 99999-9999", "col-md-3", false, null, false, "(99) 99999-9999")
                         . Form::getInput("text", "tx_email", "E-Mail", "email@email.com", "col-md-6", false, null, false, null, 200)
                         . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary")
+                        . Form::getButtonCancelar("/dashboard")
                         . Form::endForm();
                         
             ?>
@@ -59,4 +60,4 @@
       </div>
     </main>
     
-    <?php echo Form::getScritpCorreiosEndereco(); ?>
+    <?php // echo Form::getScritpCorreiosEndereco(); ?>

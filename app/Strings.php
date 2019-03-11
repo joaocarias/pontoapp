@@ -13,6 +13,9 @@ class Strings {
         
         $empresa = new ItemString('empresa','Empresa', 'fa-building', 'empresa', 'Empresa');
         $this->strings[$empresa->getId()] = $empresa;
+        
+        $usuario = new ItemString('usuario','Usuário', 'fa-user', 'usuario', 'Usuário');
+        $this->strings[$usuario->getId()] = $usuario;
     }
     
     function getStrings() {

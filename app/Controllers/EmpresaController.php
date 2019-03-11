@@ -50,7 +50,7 @@ class EmpresaController  extends Controller {
     
     
     public function editar($request, $response){
-          $btn_salvar = filter_input(INPUT_POST, "btn_salvar", FILTER_SANITIZE_STRING);
+        $btn_salvar = filter_input(INPUT_POST, "btn_salvar", FILTER_SANITIZE_STRING);
         
         $id_empresa = filter_input(INPUT_POST, "tx_id_empresa", FILTER_SANITIZE_STRING);
         $nome_empresa = filter_input(INPUT_POST, "tx_nome_empresa", FILTER_SANITIZE_STRING); 

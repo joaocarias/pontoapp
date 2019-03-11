@@ -66,6 +66,14 @@ class Form {
                 </div>';
     }
     
+    public static function getButtonCancelar($destino){
+        return "<div class='form-group'>
+                    <div class='col'>    
+                        <a href='{$destino}'><button type='button' class='btn btn-warning'>Cancelar</button></a>
+                    </div>
+                </div>";
+    }
+    
     public static function getScritpCorreiosEndereco(){
         return ' <!-- Adicionando Javascript -->
     <script type="text/javascript" >

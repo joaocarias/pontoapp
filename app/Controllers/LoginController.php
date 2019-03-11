@@ -7,11 +7,7 @@ use App\Repositorios\RepositorioLogAcesso;
 use App\Repositorios\RepositorioPessoa;
 use App\Repositorios\RepositorioUsuario;
 use App\Models\LogAcesso;
-/**
- * Description of LoginController
- *
- * @author branc
- */
+ 
 class LoginController extends Controller {
     public function login($request, $response){
         session_destroy();
