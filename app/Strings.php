@@ -16,6 +16,9 @@ class Strings {
         
         $usuario = new ItemString('usuario','Usuário', 'fa-user', 'usuario', 'Usuário');
         $this->strings[$usuario->getId()] = $usuario;
+        
+        $unidade = new ItemString('unidade','Unidade', 'fa-home', 'unidade', 'Unidade');
+        $this->strings[$unidade->getId()] = $unidade;
     }
     
     function getStrings() {

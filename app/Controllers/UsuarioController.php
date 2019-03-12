@@ -30,6 +30,8 @@ class UsuarioController extends Controller {
             $usuario = $repositorioUsuario->getObj($id_usuario);
             $retorno = $repositorioUsuario->atulizarSenha($usuario, password_hash($novaSenha, PASSWORD_DEFAULT));
             return $this->response->withHeader('Location', "/usuario/resetarsenha?id={$id_usuario}?msg={$retorno['msg_tipo']}");                
+        }else{
+            return $this->response->withHeader('Location', "/dashboard");
         }
     }
 }

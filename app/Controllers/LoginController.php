@@ -25,7 +25,7 @@ class LoginController extends Controller {
             $repUsuario = new RepositorioUsuario(); 
             $objUsuario = $repUsuario->getObjPorLogin($loginInput);
             
-            if($objUsuario != null AND $objUsuario->getId_usuario() > 0 AND $objUsuario->getId_pessoa() > 0){
+            if($objUsuario != null AND $objUsuario->getId_usuario() > 0 AND $objUsuario->getId_pessoa() > 0 AND password_verify($senhaInput, $objUsuario->getSenha()) ){
                 $repPessoa = new RepositorioPessoa();
                 $objPessoa = $repPessoa->getPessoa($objUsuario->getId_pessoa());
                 
@@ -36,13 +36,14 @@ class LoginController extends Controller {
                 $_SESSION['nome_pessoa'] = $objPessoa->getNome();
                 $_SESSION['logado'] = '1';
                 $_SESSION['id_empresa'] = $objPessoa->getId_empresa();
-            
+                           
+                
                 $retorno = $this->registrarLogin("PERMITIDO", $loginInput, $_SESSION['id_usuario']);
-                if(is_null($objPessoa->getId_empresa()) OR ($objPessoa->getId_empresa() < 0 ) OR ($objPessoa->getId_empresa() == "")){                   
-                    return $this->response->withHeader('Location', '/empresa/cadastro');
-                }else{                   
+//                if(is_null($objPessoa->getId_empresa()) OR ($objPessoa->getId_empresa() < 0 ) OR ($objPessoa->getId_empresa() == "")){                   
+//                    return $this->response->withHeader('Location', '/empresa/cadastro');
+//                }else{                   
                     return $this->response->withHeader('Location', '/dashboard');    
-                }
+//                }
             }else{
                 $retorno = $this->registrarLogin("NEGADO", $loginInput);
                 return $this->response->withHeader('Location', '/login?msg=0');
