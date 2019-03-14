@@ -25,6 +25,14 @@ $app->get('/unidade/edicao','App\Controllers\UnidadeController:edicao');
 $app->post('/unidade/editar','App\Controllers\UnidadeController:editar');
 $app->get('/unidade/excluir','App\Controllers\UnidadeController:excluir');
 
+$app->get('/feriado', 'App\Controllers\FeriadoController:index');
+$app->get('/feriado/index', 'App\Controllers\FeriadoController:index');
+$app->get('/feriado/cadastro', 'App\Controllers\FeriadoController:cadastro');
+$app->POST('/feriado/cadastrar', 'App\Controllers\FeriadoController:cadastrar');
+$app->get('/feriado/edicao', 'App\Controllers\FeriadoController:edicao');
+$app->post('/feriado/editar', 'App\Controllers\FeriadoController:editar');
+$app->get('/feriado/excluir','App\Controllers\FeriadoController:excluir');
+
 //Site
 $app->get('/', 'App\Controllers\HomeController:index');
 $app->get('/home', 'App\Controllers\HomeController:index');

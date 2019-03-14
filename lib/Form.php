@@ -69,7 +69,7 @@ class Form {
     public static function getButtonCancelar($destino){
         return "<div class='form-group'>
                     <div class='col'>    
-                        <a href='{$destino}'><button type='button' class='btn btn-warning'>Cancelar</button></a>
+                        <a href='{$destino}'><button type='button' class='btn btn-warning btn-sm'>Cancelar</button></a>
                     </div>
                 </div>";
     }

@@ -32,7 +32,7 @@
                 echo Form::beginForm("POST", "/unidade/editar")
                         . Form::getHidden("tx_id_unidade", $id_unidade )
                         . Form::getInput("text", "tx_nome_unidade", "Nome da Unidade", "Nome", "col-md-12", true, $unidade->getNome(), false, null, 200 )       
-                        . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary")
+                        . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary btn-sm")
                         . Form::getButtonCancelar("/unidade")
                         . Form::endForm();                        
             ?>

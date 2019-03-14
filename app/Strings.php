@@ -19,6 +19,10 @@ class Strings {
         
         $unidade = new ItemString('unidade','Unidade', 'fa-home', 'unidade', 'Unidade');
         $this->strings[$unidade->getId()] = $unidade;
+        
+        $unidade = new ItemString('feriado','Feriado', 'fa-calendar', 'feriado', 'Feriado');
+        $this->strings[$unidade->getId()] = $unidade;
+        
     }
     
     function getStrings() {
