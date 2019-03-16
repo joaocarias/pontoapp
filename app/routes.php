@@ -33,6 +33,17 @@ $app->get('/feriado/edicao', 'App\Controllers\FeriadoController:edicao');
 $app->post('/feriado/editar', 'App\Controllers\FeriadoController:editar');
 $app->get('/feriado/excluir','App\Controllers\FeriadoController:excluir');
 
+$app->get('/pdn', 'App\Controllers\PDNController:index');
+$app->get('/pdn/index', 'App\Controllers\PDNController:index');
+
+$app->get('/funcao', 'App\Controllers\FuncaoController:index');
+$app->get('/funcao/index','App\Controllers\FuncaoController:index');
+$app->get('/funcao/cadastro','App\Controllers\FuncaoController:cadastro');
+$app->post('/funcao/cadastrar','App\Controllers\FuncaoController:cadastrar');
+$app->get('/funcao/edicao','App\Controllers\FuncaoController:edicao');
+$app->post('/funcao/editar','App\Controllers\FuncaoController:editar');
+$app->get('/funcao/excluir','App\Controllers\FuncaoController:excluir');
+
 //Site
 $app->get('/', 'App\Controllers\HomeController:index');
 $app->get('/home', 'App\Controllers\HomeController:index');

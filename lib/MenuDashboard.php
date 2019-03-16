@@ -13,7 +13,7 @@ class MenuDashboard {
         
         return '<li>
                     <a class="app-menu__item '. $classActive.'" href="/'.$item->getLink().'">
-                        <i class="app-menu__icon fa '.$item->getIcon().' "></i>
+                        <i class="app-menu__icon '.$item->getIcon().' "></i>
                         <span class="app-menu__label">'.ucfirst($item->getTexto()).'</span>
                         </a>
                 </li>
@@ -39,7 +39,9 @@ class MenuDashboard {
             
         '.$this->getItem($stringsArr['dashboard']).'
         '.$this->getItem($stringsArr['unidade']).'
+        '.$this->getItem($stringsArr['funcao']).'
         '.$this->getItem($stringsArr['feriado']).'
+        '.$this->getItem($stringsArr['pdn']).'
         '.$this->getItem($stringsArr['empresa']).'
        
         

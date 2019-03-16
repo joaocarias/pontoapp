@@ -8,20 +8,30 @@ class Strings {
     public $strings = array();
     
     public function __construct(){ 
-        $dashboard = new ItemString('dashboard','Dashboard', 'fa-dashboard', 'dashboard', 'Dashboard');            
+        $dashboard = new ItemString('dashboard','Dashboard', 'fas fa-tachometer-alt', 'dashboard', 'Dashboard');            
         $this->strings[$dashboard->getId()] = $dashboard ;
         
-        $empresa = new ItemString('empresa','Empresa', 'fa-building', 'empresa', 'Empresa');
+        $empresa = new ItemString('empresa','Empresa', 'fas fa-building', 'empresa', 'Empresa');
         $this->strings[$empresa->getId()] = $empresa;
         
-        $usuario = new ItemString('usuario','Usuário', 'fa-user', 'usuario', 'Usuário');
+        $usuario = new ItemString('usuario','Usuário', 'fas fa-user', 'usuario', 'Usuário');
         $this->strings[$usuario->getId()] = $usuario;
         
-        $unidade = new ItemString('unidade','Unidade', 'fa-home', 'unidade', 'Unidade');
+        $unidade = new ItemString('unidade','Unidade', 'fas fa-home', 'unidade', 'Unidade');
         $this->strings[$unidade->getId()] = $unidade;
         
-        $unidade = new ItemString('feriado','Feriado', 'fa-calendar', 'feriado', 'Feriado');
-        $this->strings[$unidade->getId()] = $unidade;
+        $feriado = new ItemString('feriado','Feriado', 'far fa-calendar-minus', 'feriado', 'Feriado');
+        $this->strings[$feriado->getId()] = $feriado;
+        
+        $pdn = new ItemString('pdn','PDN', 'fab fa-creative-commons-pd-alt', 'pdn', 'PDN');
+        $this->strings[$pdn->getId()] = $pdn;
+        
+        $funcao = new ItemString('funcao','Função', 'fas fa-pencil-ruler', 'funcao', 'Função');
+        $this->strings[$funcao->getId()] = $funcao;
+        
+        
+        
+ 
         
     }
     

@@ -19,7 +19,7 @@ class SubNavPrimicipalDashboard {
          
         return '<div class="app-title">
             <div>
-                <h1><i class="fa '.$stringsArr[strtolower($_SESSION['controller'])]->getIcon().'"></i> '.ucfirst($stringsArr[strtolower($_SESSION['controller'])]->getTexto()).'</h1>              
+                <h1><i class="'.$stringsArr[strtolower($_SESSION['controller'])]->getIcon().'"></i> '.ucfirst($stringsArr[strtolower($_SESSION['controller'])]->getTexto()).'</h1>              
             </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>'

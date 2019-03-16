@@ -3,6 +3,7 @@
  use Lib\SubNavPrimicipalDashboard;
  use App\Repositorios\RepositorioFeriado;
  use Lib\Form;
+ use Lib\Auxiliar;
  
     $subNav = new SubNavPrimicipalDashboard();
             
@@ -68,7 +69,7 @@
                     $linhas = $linhas . "
                         <tr>
                             <th scope='row'>{$obj->id_feriado}</th>
-                            <td>{$obj->dt_feriado}</td>
+                            <td>".Auxiliar::converterDataParaBR($obj->dt_feriado) ."</td>
                             <td>{$obj->nome}</td>
                             <td><a href='/feriado/edicao?id={$obj->id_feriado}'>Editar</a></td>
                             <td><a href='/feriado/excluir?id={$obj->id_feriado}'>Excluir</a></td>

@@ -23,14 +23,12 @@
       <div class="row">
           <div class="col-lg-12">
             <?php
-                echo Form::beginForm("POST", "/unidade/cadastrar")               
-                        . Form::getInput("text", "tx_nome_unidade", "Nome da Unidade", "Nome", "col-md-12", true, null, false, null, 200 )       
+                echo Form::beginForm("POST", "/funcao/cadastrar")               
+                        . Form::getInput("text", "tx_nome_funcao", "Nome da Função", "Nome", "col-md-12", true, null, false, null, 200 )       
                         . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary btn-sm")
-                        . Form::getButtonCancelar("/unidade")
-                        . Form::endForm();
-                        
-            ?>
-          
+                        . Form::getButtonCancelar("/funcao")
+                        . Form::endForm();                        
+            ?>          
           </div>
           
         </div>
