@@ -37,6 +37,18 @@ class FuncionarioController extends Controller {
        return $this->view->render($response, 'layout_dashboard.php', $vars);
     }
     
+    public function detalhes($request, $response){
+       $controller = 'Funcionario';
+       $action = 'detalhes';
+       
+       $vars['action'] = $action;
+       $vars['controller'] = $controller;      
+       $_SESSION['controller'] = $controller;
+       $_SESSION['action'] = $action;     
+       
+       return $this->view->render($response, 'layout_dashboard.php', $vars);
+    }
+    
      public function cadastrar($request, $response){       
         $nome = filter_input(INPUT_POST, "tx_nome", FILTER_SANITIZE_STRING); 
         $apelido = filter_input(INPUT_POST, "tx_apelido", FILTER_SANITIZE_STRING); 

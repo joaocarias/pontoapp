@@ -48,7 +48,7 @@ $app->get('/funcionario', 'App\Controllers\FuncionarioController:index');
 $app->get('/funcionario/index','App\Controllers\FuncionarioController:index');
 $app->get('/funcionario/cadastro','App\Controllers\FuncionarioController:cadastro');
 $app->post('/funcionario/cadastrar','App\Controllers\FuncionarioController:cadastrar');
-
+$app->get('/funcionario/detalhes','App\Controllers\FuncionarioController:detalhes');
 
 //Site
 //$app->get('/', 'App\Controllers\HomeController:index');
