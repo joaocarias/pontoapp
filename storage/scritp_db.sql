@@ -1,97 +1,87 @@
-create database bd_mahina_slim;
+use bd_ponto_app;
+select * from tb_log_acesso;
+select * from tb_empresa;
 
-use bd_mahina_slim;
+CREATE TABLE `tb_log_update` (
+  `id_log` int(11) NOT NULL AUTO_INCREMENT,
+  `tabela` varchar(30) NULL,
+  `id_tabela` int(11)  NULL,
+  `reg_log` varchar(10000) NOT NULL,
+  `criado_por` int(11) NULL ,
+  `data_do_cadastro` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ativo` smallint(6) DEFAULT 1,
+  PRIMARY KEY (`id_log`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table tb_endereco
-(
-	id_endereco int(11) auto_increment not null primary key
-    , logradouro varchar(200) 
-    , numero varchar(10)
-    , complemento varchar(200)
-    , cep varchar(8)
-    , bairro varchar(200)
-    , cidade varchar(200)
-    , uf varchar(2)
-    , telefone varchar(20)
-    , celular varchar(20)
-    , email varchar(200)
-    , dt_criacao timestamp default current_timestamp
-    , criado_por int(11) not null
-    , dt_modificacao datetime
-    , modificado_por int(11)
-    , ativo smallint(4) default 1
-)engine=InnoDB;
+select * from tb_log_update order by id_log desc; 
 
-alter table tb_endereco add constraint fk_criado_por_endereco foreign key (criado_por) references tb_usuario (id_usuario);
+select * from tb_endereco;
 
-create table tb_empresa
-(
-	id_empresa int(11) auto_increment not null primary key
-    , nome varchar(200) not null
-    , nome_fantasia varchar(200)
-    , cnpj varchar(18)
-    , id_endereco int(11) not null
-    , dt_criacao timestamp default current_timestamp
-    , criado_por int(11) not null
-    , dt_modificacao datetime
-    , modificado_por int(11)
-    , ativo smallint(4) default 1
-)engine=InnoDB;
-
-alter table tb_empresa add constraint fk_id_endereco_empresa foreign key (id_endereco) references tb_endereco (id_endereco);
-alter table tb_empresa add constraint fk_criado_por_empresa foreign key (criado_por) references tb_usuario (id_usuario);
-
-create table tb_pessoa
-(
-	id_pessoa int(11) auto_increment not null primary key
-    , nome varchar(200) not null
-    , apelido varchar(200)
-    , data_de_nascimento datetime    
-    , cpf varchar(14)
-    , rg varchar(25)
-    , id_endereco int(11)  
-    , id_empresa int(11)
-    , dt_criacao timestamp default current_timestamp
-    , criado_por int(11) not null
-    , dt_modificacao datetime
-    , modificado_por int(11)
-    , ativo smallint(4) default 1
-)engine=InnoDB;
-
-alter table tb_pessoa add constraint fk_id_endereco_pessoa foreign key (id_endereco) references tb_endereco (id_endereco);
-alter table tb_pessoa add constraint fk_id_empresa_pessoa foreign key (id_empresa) references tb_empresa (id_empresa);
-
-insert into tb_pessoa (nome, criado_por) 
-	values ("Administrador", 1);
-
-create table tb_usuario 
-(
-	id_usuario int(11) auto_increment not null primary key
-    , id_pessoa int(11) not null
-    , login varchar(25) not null
-    , senha varchar(300) not null
-    , dt_criacao timestamp default current_timestamp
-    , criado_por int(11) not null
-    , dt_modificacao datetime
-    , modificado_por int(11)
-    , ativo smallint(4) default 1
-)engine=InnoDB;
-
-alter table tb_usuario add constraint fk_id_pessoa_usuario foreign key (id_pessoa) references tb_pessoa (id_pessoa);
-    
-insert into tb_usuario (id_pessoa, login, senha, criado_por)
-	values (1, '111.111.111-11', '10203040', 1);
-                
 select * from tb_usuario;
 
-create table tb_log_acesso(
-	id_log int(11) auto_increment not null,
-    id_usuario int(11),
-    login varchar(14) not null,
-    acesso varchar(10) not null,
-    data_do_cadastro timestamp default current_timestamp,
-    ativo smallint default 1,
-    primary key(id_log)
-)engine=InnoDB;
+CREATE TABLE `tb_unidade` (
+  `id_unidade` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(200) NOT NULL,  
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id_unidade`),
+  KEY `fk_criado_por_unidade` (`criado_por`),
+  CONSTRAINT `fk_criado_por_unidade` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop table tb_log_acesso;
+select * from tb_unidade;
+
+select * from tb_log_update;
+
+
+CREATE TABLE `tb_feriado` (
+  `id_feriado` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(200) NOT NULL,
+  `dt_feriado` date NOT NULL,
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id_feriado`),
+  KEY `fk_criado_por_feriado` (`criado_por`),
+  CONSTRAINT `fk_criado_por_feriado` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_pdn` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(10) NOT NULL,
+  `descricao` varchar(200) NOT NULL,  
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_pdn` (`criado_por`),
+  CONSTRAINT `fk_criado_por_pdn` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- insert into tb_pdn (`codigo`, `descricao`,`criado_por`) VALUES('7010', 'FALTA HORA', '1'); 
+
+select * from tb_pdn;
+
+
+CREATE TABLE `tb_funcao` (
+  `id_funcao` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(200) NOT NULL,  
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id_funcao`),
+  KEY `fk_criado_por_funcao` (`criado_por`),
+  CONSTRAINT `fk_criado_por_funcao` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+select * from tb_funcao;

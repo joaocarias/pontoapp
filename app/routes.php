@@ -44,9 +44,16 @@ $app->get('/funcao/edicao','App\Controllers\FuncaoController:edicao');
 $app->post('/funcao/editar','App\Controllers\FuncaoController:editar');
 $app->get('/funcao/excluir','App\Controllers\FuncaoController:excluir');
 
+$app->get('/funcionario', 'App\Controllers\FuncionarioController:index');
+$app->get('/funcionario/index','App\Controllers\FuncionarioController:index');
+$app->get('/funcionario/cadastro','App\Controllers\FuncionarioController:cadastro');
+$app->post('/funcionario/cadastrar','App\Controllers\FuncionarioController:cadastrar');
+
+
 //Site
-$app->get('/', 'App\Controllers\HomeController:index');
-$app->get('/home', 'App\Controllers\HomeController:index');
-$app->get('/contato', 'App\Controllers\HomeController:contato');
-$app->get('/sobre', 'App\Controllers\HomeController:sobre');
+//$app->get('/', 'App\Controllers\HomeController:index');
+//$app->get('/home', 'App\Controllers\HomeController:index');
+//$app->get('/contato', 'App\Controllers\HomeController:contato');
+//$app->get('/sobre', 'App\Controllers\HomeController:sobre');
+$app->get('/', 'App\Controllers\LoginController:login');
 $app->get('/login', 'App\Controllers\LoginController:login');

@@ -13,18 +13,19 @@ class HomeController extends Controller{
     public function index($request, $response){
         $vars['action'] = 'home';
         $vars['controller'] = 'Home';        
-        return $this->view->render($response, 'layout_home.php', $vars);
+      //  return $this->view->render($response, 'layout_home.php', $vars);
+        return $this->response->withHeader('Location', "/login");
     }
     
-    public function sobre($request, $response){
-        $vars['action'] = 'sobre';  
-        $vars['controller'] = 'Home';
-        return $this->view->render($response, 'layout_home.php', $vars);
-    }
-    
-    public function contato($request, $response){
-        $vars['action'] = 'contato';
-        $vars['controller'] = 'Home';        
-        return $this->view->render($response, 'layout_home.php', $vars);
-    }
+//    public function sobre($request, $response){
+//        $vars['action'] = 'sobre';  
+//        $vars['controller'] = 'Home';
+//        return $this->view->render($response, 'layout_home.php', $vars);
+//    }
+//    
+//    public function contato($request, $response){
+//        $vars['action'] = 'contato';
+//        $vars['controller'] = 'Home';        
+//        return $this->view->render($response, 'layout_home.php', $vars);
+//    }
 }

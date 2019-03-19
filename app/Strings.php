@@ -29,6 +29,10 @@ class Strings {
         $funcao = new ItemString('funcao','Função', 'fas fa-pencil-ruler', 'funcao', 'Função');
         $this->strings[$funcao->getId()] = $funcao;
         
+        $funcionario = new ItemString('funcionario','Funcionário', 'far fa-user', 'funcionario', 'Funcionário');
+        $this->strings[$funcionario->getId()] = $funcionario;
+        
+        
         
         
  

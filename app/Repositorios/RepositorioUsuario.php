@@ -8,7 +8,34 @@ use App\Models\Usuario;
 class RepositorioUsuario implements IRepositorioUsuario{
     
     public function insertObj(Usuario $obj) {
+        $i = 0;
+        $tabela = "tb_usuario";
         
+        $params = array(
+                "id_pessoa" =>$obj->getId_pessoa(),
+                "login" => $obj->getLogin(),
+                "senha" => $obj->getSenha(),
+                "criado_por" => $_SESSION["id_usuario"]
+                );
+        
+        $colunas = "";        
+        $valores = "";
+        foreach ($params as $coluna => $valor){
+            if($i == 0){
+                $colunas .= "{$coluna}";
+                $valores .= "'{$valor}'";
+            }else{
+                $colunas .= ", {$coluna}";
+                $valores .= ", '{$valor}'";
+            }
+            $i++;
+        }
+        
+        $sql = " INSERT INTO {$tabela} ( {$colunas} ) "
+        . "VALUES ({$valores}); ";
+                
+        $arrayRetorno = $obj->insert($sql);
+        return $arrayRetorno;
     }
 
     public function getObj($id): Usuario {

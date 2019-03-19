@@ -38,6 +38,7 @@ class MenuDashboard {
       <ul class="app-menu">
             
         '.$this->getItem($stringsArr['dashboard']).'
+        '.$this->getItem($stringsArr['funcionario']).'
         '.$this->getItem($stringsArr['unidade']).'
         '.$this->getItem($stringsArr['funcao']).'
         '.$this->getItem($stringsArr['feriado']).'
