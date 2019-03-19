@@ -85,3 +85,40 @@ CREATE TABLE `tb_funcao` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 select * from tb_funcao;
+
+CREATE TABLE `tb_tipo_jornada_de_trabalho` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(200) NOT NULL,  
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_tipo_jornada_de_trabalho` (`criado_por`),
+  CONSTRAINT `fk_criado_por_jornada_de_trabalho` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+select * from tb_usuario;
+select * from tb_pessoa;
+
+CREATE TABLE `tb_funcionario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pessoa` int(11) NOT NULL, 
+  `pis` VARCHAR(13) NOT NULL,
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_funcionario` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_funcionario` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tb_funcionario` ADD CONSTRAINT `fk_id_pessoa_funcionario` FOREIGN KEY (`id_pessoa`) REFERENCES `tb_pessoa` (`id_pessoa`);
+select * from tb_funcionario;
+select * from tb_pessoa;
+select * from tb_endereco;
+select * from tb_usuario;
+

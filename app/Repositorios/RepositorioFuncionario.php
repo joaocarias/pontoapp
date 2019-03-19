@@ -58,4 +58,17 @@ class RepositorioFuncionario implements IRepositorioFuncionario {
             return new Funcionario();
         }
     }
+
+    public function getFuncionarioPorNomeCPFPIS($busca) {
+        $sql = " SELECT f.id as id_funcionario, p.nome as nome, p.cpf as cpf, f.pis as pis "
+                . " FROM tb_funcionario as f "
+                . " INNER JOIN tb_pessoa as p on p.id_pessoa = f.id_pessoa "
+                . " WHERE (f.pis like '%{$busca}%' OR p.cpf like '%{$busca}%' OR p.nome like '%{$busca}%' ) AND p.ativo = '1' and f.ativo = '1' ";
+        
+        $obj = new Funcionario();                
+        $dados = $obj->selectObj($sql);
+        return $dados["obj"];
+        
+    }
+
 }
