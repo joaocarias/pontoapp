@@ -11,12 +11,14 @@
     
     $_cpf = filter_input(INPUT_GET, "cpf", FILTER_SANITIZE_STRING);
     $_pis = filter_input(INPUT_GET, "pis", FILTER_SANITIZE_STRING);
+    $_matricula = filter_input(INPUT_GET, "matricula", FILTER_SANITIZE_STRING);
+    
     $_pessoa = new Pessoa();
     $_funcionario = new Funcionario();
     $encontrado = false;
     $buscar = true;
     
-    if($_cpf && $_pis){
+    if($_cpf && $_pis && $_matricula){
         $repositorioPessoa = new RepositorioPessoa();
         $_pessoa = $repositorioPessoa->getPessoaPorCpf($_cpf);
         
@@ -28,7 +30,9 @@
         }       
         
         if(((!is_null($_funcionario->getId()) && $_funcionario->getId() != "" && $_funcionario->getId() > 0))){
-            $encontrado = true;
+            $encontrado = true;            
+        }else{
+            $_funcionario = $repositorioFuncionario->getFuncionarioPorMatricula($_matricula);
         }
 
         if($encontrado){
@@ -39,6 +43,7 @@
     }else{
         $_cpf = "";
         $_pis = "";
+        $_matricula = "";
     }
        
     ?>
@@ -66,7 +71,7 @@
                             <div class="bs-component">
                                 <div class="alert alert-dismissible alert-warning">
                                     <button class="close" type="button" data-dismiss="alert">×</button>                
-                                    <strong>Atenção!</strong> Já existe um funcionário com o CPF e/ou PIS informado!
+                                    <strong>Atenção!</strong> Já existe um funcionário com o CPF, PIS e/ou Número de Matrícula informado!
                             </div>
                           </div>
                         </div>
@@ -80,8 +85,9 @@
             
                 echo Form::beginForm("get", "/funcionario/cadastro")               
                         . Form::getInput("text", "cpf", "Informe o CPF", "CPF", "col-md-3", true, $_cpf, false, "999.999.999-99" )       
-                        . Form::getInput("text", "pis", "Informe o PIS", "PIS", "col-md-3", true, $_pis, false, "99999999999" )       
-                        .'<div class="col col-md-6"></div>'
+                        . Form::getInput("text", "pis", "Informe o PIS", "PIS", "col-md-3", true, $_pis, false, "99999999999" )
+                        . Form::getInput("text", "matricula", "Informe a Matrícula", "Matrícula", "col-md-3", true, $_matricula, false, "99999999" )
+                        .'<div class="col col-md-3"></div>'
                         . Form::getInputButtonSubmit("btn_proximo", "Próximo", "btn-primary btn-sm")
                         . Form::getButtonCancelar("/funcionario")
                         . Form::endForm();                        
@@ -99,11 +105,13 @@
             <?php
                 echo Form::beginForm("POST", "/funcionario/cadastrar")  
                         . Form::getInput("text", "tx_cpf", "CPF", "CPF", "col-md-3", true, $_cpf, true, "999.999.999-99" )
-                        . Form::getInput("text", "tx_pis", "PIS", "PIS", "col-md-3", true, $_pis, true, "99999999999" )     
+                        . Form::getInput("text", "tx_pis", "PIS", "PIS", "col-md-3", true, $_pis, true, "99999999999" )    
+                        . Form::getInput("text", "tx_matricula", "Matrícula", "Matrícula", "col-md-3", true, $_matricula, true, "99999999" )
                         . Form::getInput("text", "tx_rg", "RG", "RG", "col-md-3", false, null, false, null, 20 )
-                        . Form::getInput("date", "tx_data_de_nascimento", "Data De Nascimento", "Data", "col-md-3", true, null, false )
+                        
                         . Form::getInput("text", "tx_nome", "Nome", "Nome", "col-md-6", true, null, false, null, 200 )
-                        . Form::getInput("text", "tx_apelido", "Apelido", "Apelido", "col-md-6", false, null, false, null, 200 )
+                        . Form::getInput("text", "tx_apelido", "Apelido", "Apelido", "col-md-3", false, null, false, null, 200 )
+                        . Form::getInput("date", "tx_data_de_nascimento", "Data De Nascimento", "Data", "col-md-3", true, null, false )
                         
                         . Form::getInput("text", "tx_cep", "CEP", "59775-000", "col-md-3", false, null, false, "99999-999")
                         . Form::getInput("text", "tx_logradouro", "Rua", "Nome da Rua/Av.", "col-md-7", false, null, false, null, 200)

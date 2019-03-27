@@ -3,26 +3,30 @@
 namespace App\Models;
 use Lib\Model;
 
-class Unidade extends Model{
-    private $id_unidade;
+class TipoJornadaDeTrabalho extends Model {
+    private $id;
     private $nome;
+    private $id_empresa;       
     private $dt_criacao;
     private $criado_por;
     private $dt_modificacao;
     private $modificado_por;
-    private $ativo;
-    private $id_empresa;
-            
+    private $ativo; 
+    
     function __construct($nome = null) {
         $this->nome = $nome;
     }
     
-    function getId_unidade() {
-        return $this->id_unidade;
+    function getId() {
+        return $this->id;
     }
 
     function getNome() {
         return $this->nome;
+    }
+
+    function getId_empresa() {
+        return $this->id_empresa;
     }
 
     function getDt_criacao() {
@@ -45,12 +49,16 @@ class Unidade extends Model{
         return $this->ativo;
     }
 
-    function setId_unidade($id_unidade) {
-        $this->id_unidade = $id_unidade;
+    function setId($id) {
+        $this->id = $id;
     }
 
     function setNome($nome) {
         $this->nome = $nome;
+    }
+
+    function setId_empresa($id_empresa) {
+        $this->id_empresa = $id_empresa;
     }
 
     function setDt_criacao($dt_criacao) {
@@ -71,13 +79,5 @@ class Unidade extends Model{
 
     function setAtivo($ativo) {
         $this->ativo = $ativo;
-    }
-    
-    function getId_empresa() {
-        return $this->id_empresa;
-    }
-
-    function setId_empresa($id_empresa) {
-        $this->id_empresa = $id_empresa;
-    }
+    }    
 }

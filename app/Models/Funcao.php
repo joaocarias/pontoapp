@@ -4,16 +4,25 @@ namespace App\Models;
 use Lib\Model;
 
 class Funcao extends Model{
-    public $id_funcao;
-    public $nome;
-    public $dt_criacao;
-    public $criado_por;
-    public $dt_modificacao;
-    public $modificado_por;
-    public $ativo;
+    private $id_funcao;
+    private $nome;
+    private $dt_criacao;
+    private $criado_por;
+    private $dt_modificacao;
+    private $modificado_por;
+    private $ativo;
+    private $id_empresa;
     
     function __construct($nome = null) {
         $this->nome = $nome;
+    }
+    
+    function getId_empresa() {
+        return $this->id_empresa;
+    }
+
+    function setId_empresa($id_empresa) {
+        $this->id_empresa = $id_empresa;
     }
     
     function getId_funcao() {

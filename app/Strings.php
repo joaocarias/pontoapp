@@ -32,7 +32,11 @@ class Strings {
         $funcionario = new ItemString('funcionario','Funcionário', 'far fa-user', 'funcionario', 'Funcionário');
         $this->strings[$funcionario->getId()] = $funcionario;
         
+        $lotacao = new ItemString('lotacao','Lotação', 'fas fa-home', 'lotacao', 'Lotação');
+        $this->strings[$lotacao->getId()] = $lotacao;
         
+        $JornadaDeTrabalho = new ItemString('jornadadetrabalho','Jornada de Trabalho', 'fas fa-home', 'jornadadetrabalho','Jornada de Trabalho');
+        $this->strings[$JornadaDeTrabalho->getId()] = $JornadaDeTrabalho;
         
         
  

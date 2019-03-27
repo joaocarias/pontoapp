@@ -63,10 +63,10 @@
                 $repositorio = new RepositorioFeriado();
                 $feriados = $repositorio->getFeriados($_de, $_ate);
               
-                $linhas = "";
+                $linhasLotacoes = "";
 
                 foreach ($feriados as $obj){
-                    $linhas = $linhas . "
+                    $linhasLotacoes = $linhasLotacoes . "
                         <tr>
                             <th scope='row'>{$obj->id_feriado}</th>
                             <td>".Auxiliar::converterDataParaBR($obj->dt_feriado) ."</td>
@@ -88,7 +88,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?=$linhas?>                   
+                    <?=$linhasLotacoes?>                   
                   </tbody>
                 </table>
           

@@ -9,7 +9,7 @@ use App\Models\LogUpdate;
 class RepositorioFuncao implements IRepositorioFuncao{
     
     public function getFuncoes() {
-        $sql = " SELECT * FROM tb_funcao WHERE ativo = '1' ";
+        $sql = " SELECT * FROM tb_funcao WHERE ativo = '1' AND id_empresa = '{$_SESSION['id_empresa']}' ";
         $obj = new Funcao();            
         $dados = $obj->selectObj($sql);        
         $array = array();
@@ -24,6 +24,7 @@ class RepositorioFuncao implements IRepositorioFuncao{
                 $obj->setId_funcao($row->id_funcao);                
                 $obj->setModificado_por($row->modificado_por);            
                 $obj->setNome($row->nome);
+                $obj->setId_empresa($row->id_empresa);
                 array_push($array, $obj);
             }                                        
             return $array;
@@ -38,7 +39,8 @@ class RepositorioFuncao implements IRepositorioFuncao{
         
         $params = array(
                 "nome" =>$obj->getNome(), 
-                "criado_por" => $_SESSION["id_usuario"]
+                "criado_por" => $_SESSION["id_usuario"],
+                "id_empresa" => $_SESSION['id_empresa']
                 );
         
         $colunas = "";        
@@ -62,7 +64,7 @@ class RepositorioFuncao implements IRepositorioFuncao{
     }
 
     public function getObj($id) {
-        $sql = " SELECT * FROM tb_funcao WHERE id_funcao = '{$id}' AND ativo = '1' ";
+        $sql = " SELECT * FROM tb_funcao WHERE id_funcao = '{$id}' AND ativo = '1' AND id_empresa = '{$_SESSION['id_empresa']}' ";
         $obj = new Funcao();
                 
         $dados = $obj->selectObj($sql);        
@@ -76,6 +78,7 @@ class RepositorioFuncao implements IRepositorioFuncao{
                 $obj->setId_funcao($row->id_funcao);
                 $obj->setNome($row->nome);                
                 $obj->setModificado_por($row->modificado_por);                
+                $obj->setId_empresa($row->id_empresa);
             }                
             return $obj;
         }else{
@@ -137,5 +140,20 @@ class RepositorioFuncao implements IRepositorioFuncao{
         }
         
         return $retorno;
+    }
+    
+    public function getArrayBasic(){
+        $list = $this->getFuncoes();
+        
+        $array = array();
+        
+        $i = 0;
+        foreach ($list as $item){
+            $array[$i]['id'] = $item->getId_funcao();
+            $array[$i]['value'] = $item->getNome();
+            $i++;
+        }
+        
+        return $array;
     }
 }

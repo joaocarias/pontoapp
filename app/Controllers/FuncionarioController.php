@@ -54,6 +54,7 @@ class FuncionarioController extends Controller {
         $apelido = filter_input(INPUT_POST, "tx_apelido", FILTER_SANITIZE_STRING); 
         $cpf = filter_input(INPUT_POST, "tx_cpf", FILTER_SANITIZE_STRING); 
         $pis = filter_input(INPUT_POST, "tx_pis", FILTER_SANITIZE_STRING); 
+        $matricula = filter_input(INPUT_POST, "tx_matricula", FILTER_SANITIZE_STRING);
         $data_de_nascimento = filter_input(INPUT_POST, "tx_data_de_nascimento", FILTER_SANITIZE_STRING); 
         $rg = filter_input(INPUT_POST, "tx_rg", FILTER_SANITIZE_STRING); 
                 
@@ -81,7 +82,7 @@ class FuncionarioController extends Controller {
                 $repositorioPessoa = new RepositorioPessoa();
                 $retornoPessoa = $repositorioPessoa->insertPessoa($objPessoa);
                 if(!is_null($retornoPessoa) && $retornoPessoa['id'] > 0){
-                    $objFuncionario = new Funcionario($retornoPessoa['id'], $pis);
+                    $objFuncionario = new Funcionario($retornoPessoa['id'], $pis, $matricula);
                     $repositorioFuncionario = new RepositorioFuncionario();
                     $retornoFuncionario = $repositorioFuncionario->insertFuncionario($objFuncionario);
                                         
@@ -89,7 +90,7 @@ class FuncionarioController extends Controller {
                     $repositorioUsuario = new RepositorioUsuario();
                     $retornoUsuario = $repositorioUsuario->insertObj($objUsuario);
                     
-                    return $this->response->withHeader('Location', '/funcionario?r='.$retornoFuncionario['id']);
+                    return $this->response->withHeader('Location', '/lotacao/cadastro?id='.$retornoFuncionario['id']);
                 }
             }else{
                 return $this->response->withHeader('Location', '/funcionario?r=error');                

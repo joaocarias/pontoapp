@@ -28,10 +28,10 @@
                 $repositorio = new RepositorioPDN();
                 $pdns = $repositorio->getPDNs();
               
-                $linhas = "";
+                $linhasLotacoes = "";
 
                 foreach ($pdns as $obj){
-                    $linhas = $linhas . "
+                    $linhasLotacoes = $linhasLotacoes . "
                         <tr>
                             <th scope='row'>{$obj->id}</th>
                             <td>{$obj->codigo}</td>
@@ -50,7 +50,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?=$linhas?>                   
+                    <?=$linhasLotacoes?>                   
                   </tbody>
                 </table>
           

@@ -9,7 +9,7 @@ use App\Models\LogUpdate;
 class RepositorioUnidade implements IRepositorioUnidade{
     
     public function getUnidades() {
-        $sql = " SELECT * FROM tb_unidade WHERE ativo = '1' ";
+        $sql = " SELECT * FROM tb_unidade WHERE ativo = '1' and id_empresa = '{$_SESSION['id_empresa']}'";
         $obj = new Unidade();            
         $dados = $obj->selectObj($sql);        
         $array = array();
@@ -24,6 +24,7 @@ class RepositorioUnidade implements IRepositorioUnidade{
                 $obj->setId_unidade($row->id_unidade);                
                 $obj->setModificado_por($row->modificado_por);            
                 $obj->setNome($row->nome);
+                $obj->setId_empresa($row->id_empresa);
                 array_push($array, $obj);
             }                                        
             return $array;
@@ -38,6 +39,7 @@ class RepositorioUnidade implements IRepositorioUnidade{
         
         $params = array(
                 "nome" =>$unidade->getNome(), 
+                "id_empresa" => $_SESSION["id_empresa"],
                 "criado_por" => $_SESSION["id_usuario"]
                 );
         
@@ -62,7 +64,7 @@ class RepositorioUnidade implements IRepositorioUnidade{
     }
 
     public function getObj($id_unidade) {
-         $sql = " SELECT * FROM tb_unidade WHERE id_unidade = '{$id_unidade}' AND ativo = '1' ";
+         $sql = " SELECT * FROM tb_unidade WHERE id_unidade = '{$id_unidade}' AND ativo = '1' and id_empresa = '{$_SESSION['id_empresa']}' ";
         $obj = new Unidade();
                 
         $dados = $obj->selectObj($sql);        
@@ -76,6 +78,7 @@ class RepositorioUnidade implements IRepositorioUnidade{
                 $obj->setId_unidade($row->id_unidade);
                 $obj->setNome($row->nome);                
                 $obj->setModificado_por($row->modificado_por);                
+                $obj->setId_empresa($row->id_empresa);
             }                
             return $obj;
         }else{
@@ -136,5 +139,19 @@ class RepositorioUnidade implements IRepositorioUnidade{
         
         return $retorno;
     }
-
+    
+    public function getArrayBasic(){
+        $list = $this->getUnidades();
+        
+        $array = array();
+        
+        $i = 0;
+        foreach ($list as $item){
+            $array[$i]['id'] = $item->getId_unidade();
+            $array[$i]['value'] = $item->getNome();
+            $i++;
+        }
+        
+        return $array;
+    }
 }

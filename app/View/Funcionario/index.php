@@ -34,7 +34,7 @@
             </div>
               <?php 
                   echo Form::beginForm('get', '/funcionario/index')
-                          .Form::getInput('text', "tx_buscar", "Nome, CPF ou PIS", "Informe Nome, CPF ou PIS", "col-md-6", TRUE, $_buscar)                          
+                          .Form::getInput('text', "tx_buscar", "Nome, CPF, PIS ou Matrícula", "Informe Nome, CPF, PIS ou Matrícula", "col-md-6", TRUE, $_buscar)                          
                           .'<div class="col col-md-6"></div>'
                           .Form::getInputButtonSubmit("buscar", "buscar", "btn-success btn-sm")                        
                   .Form::endForm(); 
@@ -47,17 +47,18 @@
         if($_buscar){
             
             $repositorio = new RepositorioFuncionario();
-            $array = $repositorio->getFuncionarioPorNomeCPFPIS($_buscar);
+            $array = $repositorio->getFuncionarioPorNomeCPFPISMatricula($_buscar);
             
-            $linhas = "";
+            $linhasLotacoes = "";
             
             foreach ($array as $obj){
-                    $linhas = $linhas . "
+                    $linhasLotacoes = $linhasLotacoes . "
                         <tr>
                             <th scope='row'>{$obj->id_funcionario}</th>
                             <td>".$obj->nome ."</td>
                             <td>{$obj->cpf}</td>
                             <td>{$obj->pis}</td>
+                            <td>{$obj->matricula}</td>
                             <td><a href='/funcionario/detalhes?id={$obj->id_funcionario}'>Mais Informações</a></td>
                         </tr>";
                 }
@@ -77,11 +78,12 @@
                       <th scope="col">Nome</th>
                       <th scope="col">CPF</th>
                       <th>PIS</th>
+                      <th>Matrícula</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    '.$linhas.'                   
+                    '.$linhasLotacoes.'                   
                   </tbody>
             </table>
 

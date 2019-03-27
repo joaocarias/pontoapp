@@ -37,15 +37,15 @@
                 $repositorioUnidade = new RepositorioUnidade();
                 $unidades = $repositorioUnidade->getUnidades();
               
-                $linhas = "";
+                $linhasLotacoes = "";
 //                var_dump($unidades);
                 foreach ($unidades as $obj){
-                    $linhas = $linhas . "
+                    $linhasLotacoes = $linhasLotacoes . "
                         <tr>
-                            <th scope='row'>{$obj->id_unidade}</th>
-                            <td>{$obj->nome}</td>
-                            <td><a href='/unidade/edicao?id={$obj->id_unidade}'>Editar</a></td>
-                            <td><a href='/unidade/excluir?id={$obj->id_unidade}'>Excluir</a></td>
+                            <th scope='row'>{$obj->getId_unidade()}</th>
+                            <td>{$obj->getNome()}</td>
+                            <td><a href='/unidade/edicao?id={$obj->getId_unidade()}'>Editar</a></td>
+                            <td><a href='/unidade/excluir?id={$obj->getId_unidade()}'>Excluir</a></td>
                         </tr>";
                 }
                 
@@ -60,7 +60,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?=$linhas?>                   
+                    <?=$linhasLotacoes?>                   
                   </tbody>
                 </table>
           

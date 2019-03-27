@@ -50,6 +50,14 @@ $app->get('/funcionario/cadastro','App\Controllers\FuncionarioController:cadastr
 $app->post('/funcionario/cadastrar','App\Controllers\FuncionarioController:cadastrar');
 $app->get('/funcionario/detalhes','App\Controllers\FuncionarioController:detalhes');
 
+$app->get('/lotacao/cadastro','App\Controllers\LotacaoController:cadastro');
+$app->post('/lotacao/cadastrar','App\Controllers\LotacaoController:cadastrar');
+
+$app->get('/jornadadetrabalho/cadastro','App\Controllers\JornadaDeTrabalhoController:cadastro');
+
+$app->post('/lotacaojornadadetrabalho/cadastrar','App\Controllers\LotacaoJornadaDeTrabalhoController:cadastrar');
+
+
 //Site
 //$app->get('/', 'App\Controllers\HomeController:index');
 //$app->get('/home', 'App\Controllers\HomeController:index');

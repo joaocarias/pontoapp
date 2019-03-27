@@ -37,14 +37,14 @@
                 $repositorio = new RepositorioFuncao();
                 $funcoes = $repositorio->getFuncoes();
               
-                $linhas = "";
+                $linhasLotacoes = "";
                 foreach ($funcoes as $obj){
-                    $linhas = $linhas . "
+                    $linhasLotacoes = $linhasLotacoes . "
                         <tr>
-                            <th scope='row'>{$obj->id_funcao}</th>
-                            <td>{$obj->nome}</td>
-                            <td><a href='/funcao/edicao?id={$obj->id_funcao}'>Editar</a></td>
-                            <td><a href='/funcao/excluir?id={$obj->id_funcao}'>Excluir</a></td>
+                            <th scope='row'>{$obj->getId_funcao()}</th>
+                            <td>{$obj->getNome()}</td>
+                            <td><a href='/funcao/edicao?id={$obj->getId_funcao()}'>Editar</a></td>
+                            <td><a href='/funcao/excluir?id={$obj->getId_funcao()}'>Excluir</a></td>
                         </tr>";
                 }
                 
@@ -59,7 +59,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?=$linhas?>                   
+                    <?=$linhasLotacoes?>                   
                   </tbody>
                 </table>
           

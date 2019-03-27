@@ -75,11 +75,12 @@ class RepositorioFeriado implements IRepositorioFeriado{
                 $obj->setId_feriado($row->id_feriado);
                 $obj->setDt_feriado($row->dt_feriado);
                 $obj->setNome($row->nome);                
-                $obj->setModificado_por($row->modificado_por);                
+                $obj->setModificado_por($row->modificado_por);   
+                
             }                
             return $obj;
         }else{
-            return new Unidade();
+            return new Feriado();
         }   
     }
 

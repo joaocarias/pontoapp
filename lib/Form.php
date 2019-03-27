@@ -74,6 +74,14 @@ class Form {
                 </div>";
     }
     
+    public static function getButton($destino, $valor, $class){
+        return "<div class='form-group'>
+                    <div class='col'>    
+                        <a href='{$destino}'><button type='button' class='btn {$class}'>{$valor}</button></a>
+                    </div>
+                </div>";
+    }
+    
     public static function getScritpCorreiosEndereco(){
         return ' <!-- Adicionando Javascript -->
     <script type="text/javascript" >
@@ -192,6 +200,44 @@ public static function getSelectUF($nome, $label, $tamanho, $required, $value){
         return '<input type="hidden" name="'.$name.'" value="'.$value.'">';
     }
     
+    public static function getSelect($array, $nome, $label, $tamanho, $required, $id_select = null){
+        $selecione = '';
+        
+        if($required){
+            $obrigatorio = "required=required";
+            $descricao = "* Campo Obrigatório";
+        } else {
+            $obrigatorio = "";
+            $descricao = "";
+        }
+                        
+        if(is_null($id_select) OR $id_select == "" ){
+            $selecione = 'selected="selected"';
+        }
+        
+        $options = "";
+        
+        foreach ($array as $row){
+            if($row['id'] == $id_select AND !is_null($id_select)){
+                $option_selected_ = 'selected="selected"';
+            }else{
+                $option_selected_ = "";
+            }
+            
+            $options = $options . ' <option value="'.$row['id'].'" '.$option_selected_.'>'.$row['value'].'</option>';
+            
+        }
+        
+        return '<div class="form-group '.$tamanho.'">
+                        <label for="'.$nome.'">'.$label.'</label>                        
+                               <select class="form-control form-control-sm form-control-success" name="'.$nome.'" id="'.$nome.'" '.$obrigatorio.'>    
+                                  <option valeu="" '.$selecione.' disabled="disabled" >SELECIONE</option>
+                                  '.$options.'
+                            </select>   
+                            <small class="form-text">'.$descricao.'</small>                        
+                    </div>';
+        
+    }
 }
 
 

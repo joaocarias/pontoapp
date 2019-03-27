@@ -21,6 +21,7 @@ select * from tb_usuario;
 
 CREATE TABLE `tb_unidade` (
   `id_unidade` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empresa` int(11) NOT NULL,
   `nome` varchar(200) NOT NULL,  
   `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `criado_por` int(11) NOT NULL,
@@ -33,6 +34,8 @@ CREATE TABLE `tb_unidade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 select * from tb_unidade;
+
+alter table tb_unidade add CONSTRAINT `fk_id_empresa_unidade` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
 
 select * from tb_log_update;
 
@@ -73,6 +76,7 @@ select * from tb_pdn;
 
 CREATE TABLE `tb_funcao` (
   `id_funcao` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empresa` int(11) NOT NULL,
   `nome` varchar(200) NOT NULL,  
   `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `criado_por` int(11) NOT NULL,
@@ -84,11 +88,14 @@ CREATE TABLE `tb_funcao` (
   CONSTRAINT `fk_criado_por_funcao` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+alter table tb_funcao add CONSTRAINT `fk_id_empresa_funcao` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
+
 select * from tb_funcao;
 
 CREATE TABLE `tb_tipo_jornada_de_trabalho` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(200) NOT NULL,  
+  `nome` varchar(200) NOT NULL,
+  `id_empresa` int(11) NOT NULL,
   `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `criado_por` int(11) NOT NULL,
   `dt_modificacao` datetime DEFAULT NULL,
@@ -99,6 +106,8 @@ CREATE TABLE `tb_tipo_jornada_de_trabalho` (
   CONSTRAINT `fk_criado_por_jornada_de_trabalho` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+alter table tb_tipo_jornada_de_trabalho add CONSTRAINT `fk_id_empresa_jornada_de_trabalho` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
+
 select * from tb_usuario;
 select * from tb_pessoa;
 
@@ -106,6 +115,7 @@ CREATE TABLE `tb_funcionario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_pessoa` int(11) NOT NULL, 
   `pis` VARCHAR(13) NOT NULL,
+  `matricula` int(11),
   `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
   `criado_por` int(11) NOT NULL,
   `dt_modificacao` datetime DEFAULT NULL,
@@ -122,3 +132,132 @@ select * from tb_pessoa;
 select * from tb_endereco;
 select * from tb_usuario;
 
+CREATE TABLE `tb_lotacao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_funcionario` int(11) NOT NULL, 
+  `id_unidade` int(11) NOT NULL, 
+  `id_funcao` int(11) NOT NULL, 
+  `dt_inicio_lotacao` date NOT NULL,
+  `dt_fim_lotacao` date,
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_lotacao` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_lotacao` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tb_lotacao` ADD CONSTRAINT `fk_id_funcionario_lotacao` FOREIGN KEY (`id_funcionario`) REFERENCES `tb_funcionario` (`id`);
+ALTER TABLE `tb_lotacao` ADD CONSTRAINT `fk_id_unidade_lotacao` FOREIGN KEY (`id_unidade`) REFERENCES `tb_unidade` (`id_unidade`);
+ALTER TABLE `tb_lotacao` ADD CONSTRAINT `fk_id_funcao_lotacao` FOREIGN KEY (`id_funcao`) REFERENCES `tb_funcao` (`id_funcao`);
+
+select * from tb_unidade;
+select * from tb_usuario;
+select * from tb_pessoa;
+
+select * from tb_lotacao;
+
+
+
+select * from tb_tipo_jornada_de_trabalho;
+
+
+
+insert into tb_tipo_jornada_de_trabalho (nome, id_empresa, criado_por)
+	Values('DIÁRIA', '1','1');
+insert into tb_tipo_jornada_de_trabalho (nome, id_empresa, criado_por)
+	Values('PLANTÃO', '1','1');
+    
+    select * from tb_lotacao;
+
+CREATE TABLE `tb_jornada_de_trabalho` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empresa` int(11) NOT NULL, 
+  `id_tipo_jornada_de_trabalho` int(11) NOT NULL,
+  `descricao` varchar(200) NOT NULL,
+  `seg` int(11) default 0,
+  `ter` int(11) default 0,
+  `qua` int(11) default 0,
+  `qui` int(11) default 0,
+  `sex` int(11) default 0,
+  `sab` int(11) default 0,
+  `dom` int(11) default 0,  
+  `num_plantoes` int(11) default 0,
+  `carga_plantao` int(11) default 0,  
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_jornada_de_trabalho1` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_jornada_de_trabalho1` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tb_jornada_de_trabalho` ADD CONSTRAINT `fk_id_empresa_jornada_de_trabalho2` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
+ALTER TABLE `tb_jornada_de_trabalho` ADD CONSTRAINT `fk_id_tipo_jornada_de_trabalho2` FOREIGN KEY (`id_tipo_jornada_de_trabalho`) REFERENCES `tb_tipo_jornada_de_trabalho` (`id`);
+
+insert into tb_jornada_de_trabalho (id_empresa, id_tipo_jornada_de_trabalho, descricao,
+	seg, ter, qua, qui, sex, criado_por) 
+    VALUES ('1', '1', '8 Horas diárias - 40 Semanais - De Segunda a Sexta'
+    ,'8', '8', '8', '8', '8', '1');
+
+insert into tb_jornada_de_trabalho (id_empresa, id_tipo_jornada_de_trabalho, descricao,
+	num_plantoes, carga_plantao, criado_por)
+    VALUES ('1', '2', 'Escala de 12 plantões por 12 dias - 144 horas mensais', '12', '12', '1');
+
+insert into tb_jornada_de_trabalho (id_empresa, id_tipo_jornada_de_trabalho, descricao,
+	seg, ter, qua, qui, sex, sab, criado_por) 
+    VALUES ('1', '1', '44 horas semanais - 8 Horas diárias De Segunda a Sexta e 4 horas no sábado'
+    ,'8', '8', '8', '8', '8', '4', '1');
+
+insert into tb_jornada_de_trabalho (id_empresa, id_tipo_jornada_de_trabalho, descricao,
+	num_plantoes, carga_plantao, criado_por)
+    VALUES ('1', '2', 'Escala de 10 plantões de 12 horas - 120 horas mensais', '10', '12', '1');
+
+select * from tb_jornada_de_trabalho;
+
+select * from tb_empresa;
+
+CREATE TABLE `tb_lotacao_jornada_de_trabalho` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_lotacao` int(11) NOT NULL, 
+  `id_jornada_de_trabalho` int(11) NOT NULL,
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_lotacao_jornada_de_trabalho_jornada_de_trabalho1` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_lotacao_jornada_de_trabalho_jornada_de_trabalho1` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tb_lotacao_jornada_de_trabalho` ADD CONSTRAINT `fk_id_lotacao_lotacao_jornada_de_trabalho2` FOREIGN KEY (`id_lotacao`) REFERENCES `tb_lotacao` (`id`);
+ALTER TABLE `tb_lotacao_jornada_de_trabalho` ADD CONSTRAINT `fk_id_jornada_de_trabalho_lotac` FOREIGN KEY (`id_jornada_de_trabalho`) REFERENCES `tb_jornada_de_trabalho` (`id`);
+
+select * from tb_lotacao_jornada_de_trabalho;
+
+CREATE TABLE `tb_lotacao_registra_ponto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_lotacao` int(11) NOT NULL, 
+  `registra_ponto` varchar(20) NOT NULL,
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_lotacao_registra_ponto` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_lotacao_registra_ponto` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tb_lotacao_registra_ponto` ADD CONSTRAINT `fk_id_lotacao_lotacao_registra_ponto` FOREIGN KEY (`id_lotacao`) REFERENCES `tb_lotacao` (`id`);
+
+select * from tb_lotacao_registra_ponto;
+
+use bd_ponto_app;
+select * from tb_funcionario;
+alter table tb_funcionario add column matricula int(11);

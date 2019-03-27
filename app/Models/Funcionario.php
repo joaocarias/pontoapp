@@ -4,20 +4,30 @@ namespace App\Models;
 use Lib\Model;
 
 class Funcionario extends Model {
-    public $id;
-    public $id_pessoa;    
-    public $dt_criacao;
-    public $criado_por;
-    public $dt_modificacao;
-    public $modificado_por;
-    public $ativo;
-    public $pis;
+    private $id;
+    private $id_pessoa;    
+    private $dt_criacao;
+    private $criado_por;
+    private $dt_modificacao;
+    private $modificado_por;
+    private $ativo;
+    private $pis;
+    private $matricula;
             
-    function __construct($id_pessoa = null, $pis = null) {
+    function __construct($id_pessoa = null, $pis = null, $matricula = null) {
         $this->id_pessoa = $id_pessoa;
         $this->pis = $pis;
+        $this->matricula = $matricula;
     }
     
+    function getMatricula() {
+        return $this->matricula;
+    }
+
+    function setMatricula($matricula) {
+        $this->matricula = $matricula;
+    }
+        
     function getPis() {
         return $this->pis;
     }
