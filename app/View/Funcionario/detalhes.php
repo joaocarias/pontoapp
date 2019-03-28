@@ -70,14 +70,23 @@
             <div class="bs-component">                            
               <div class="card mb-3 border-success">
                 
-                <div class="card-body">                              
-                           <p> Nome: <strong><?= $pessoa->getNome(); ?></strong> <p>
-                           <p> Apelido: <strong><?= $pessoa->getApelido(); ?></strong> <p>
-                           <p> CPF: <strong> <?= $pessoa->getCpf(); ?> </strong></p>
-                           <p> PIS: <strong> <?= $funcionario->getPis(); ?> </strong> </p>
-                           <p> Matrícula: <strong> <?= $funcionario->getMatricula(); ?> </strong> </p>
-                           <p> Data de Nascimento: <strong> <?= Auxiliar::converterDataParaBR($pessoa->getData_de_nascimento()); ?> </strong> </p>
-                           <p> Endereço: <strong> <?php                                
+                <div class="card-body">  
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Nome: <strong><?= $pessoa->getNome(); ?></strong></td>
+                                <td>CPF: <strong> <?= $pessoa->getCpf(); ?> </strong></td>
+                            </tr>
+                            <tr>
+                                <td>PIS: <strong> <?= $funcionario->getPis(); ?> </strong></td>
+                                <td>Matrícula: <strong> <?= $funcionario->getMatricula(); ?> </strong></td>
+                            </tr>
+                            <tr>
+                                <td>Gênero: <strong><?= $pessoa->getGenero(); ?></strong></td>
+                                <td>Data de Nascimento: <strong> <?= Auxiliar::converterDataParaBR($pessoa->getData_de_nascimento()); ?></strong></td>
+                            </tr>
+                            <tr>
+                                <td>Endereço: <strong> <?php                                
                                     $endereco_ = $endereco->getLogradouro();
                                     $endereco_ = $endereco->getNumero() != "" ? $endereco_ . ", " . $endereco->getNumero() : $endereco_ . ", S/N";
                                     $endereco_ = $endereco->getComplemento() != "" ? $endereco_ . ", " . $endereco->getComplemento() : $endereco_ . "";
@@ -86,11 +95,19 @@
                                     $endereco_ = $endereco->getCidade() != "" ? $endereco_ . " - " . $endereco->getCidade() : $endereco_ . "";
                                     $endereco_ = $endereco->getUf() != "" ? $endereco_ . " - " . $endereco->getUf() : $endereco_ . "";
                                     echo $endereco_;
-                                ?> </strong> </p>
-                            <p> Telefone: <strong> <?= $endereco->getTelefone(); ?></strong> </p>
-                            <p> Celular: <strong> <?= $endereco->getCelular(); ?> </strong> </p>
-                            <p> E-Mail:  <strong>    <?= $endereco->getEmail(); ?> </strong> </p>
-                    
+                                ?> </strong> 
+                                </td>
+                                <td>Telefone: <strong> <?= $endereco->getTelefone(); ?></strong> </td>
+                            </tr>
+                            <tr>
+                                <td>E-Mail:  <strong>    <?= $endereco->getEmail(); ?> </strong></td>
+                                <td>Celular: <strong> <?= $endereco->getCelular(); ?> </strong></td>
+                            </tr>
+
+                        </tbody>
+                        
+                    </table>
+                                        
                     <a class="card-link" href="/funcionario/edicao?id=<?= $funcionario->getId();?>">Editar</a>     
                      <a class="card-link" href="/funcionario/exclusao?id=<?= $funcionario->getId();?>">Excluir</a> 
                       <a class="card-link" href="/funcionario/resetedesenha?id=<?= $funcionario->getId();?>">Resetar Senha</a> 

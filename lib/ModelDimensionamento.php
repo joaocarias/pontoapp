@@ -2,7 +2,7 @@
 
 namespace Lib;
 
-class Model extends ConexaoDimensionamento {
+class ModelDimensionamento extends ConexaoDimensionamento {
     public function insert($sql){
         try{
             $pdo = parent::getDB();

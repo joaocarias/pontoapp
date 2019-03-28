@@ -155,8 +155,8 @@ public static function getSelectUF($nome, $label, $tamanho, $required, $value){
             $descricao = "";
         }
         
-        if($value=="" OR is_null($value)){
-            $value="RN";
+        if(is_null($value) OR $value == "" ){
+            $selecione = 'selected="selected"';
         }
                 
         return '<div class="form-group '.$tamanho.'">
@@ -194,7 +194,7 @@ public static function getSelectUF($nome, $label, $tamanho, $required, $value){
                         </div>
                     </div>';
         
-    }    
+    }
     
     public static function getHidden($name, $value){
         return '<input type="hidden" name="'.$name.'" value="'.$value.'">';

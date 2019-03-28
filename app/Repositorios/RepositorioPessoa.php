@@ -27,6 +27,7 @@ class RepositorioPessoa implements IRepositorioPessoa {
                 $obj->setId_endereco($row->id_endereco);
                 $obj->setNome($row->nome);
                 $obj->setRg($row->rg);
+                $obj->setGenero($row->genero);
             }                
             return $obj;
         }else{
@@ -55,6 +56,7 @@ class RepositorioPessoa implements IRepositorioPessoa {
                 $obj->setId_endereco($row->id_endereco);
                 $obj->setNome($row->nome);
                 $obj->setRg($row->rg);
+                $obj->setGenero($row->genero);
             }                
             return $obj;
         }else{
@@ -80,6 +82,7 @@ class RepositorioPessoa implements IRepositorioPessoa {
                 "data_de_nascimento" => $pessoa->getData_de_nascimento(),
                 "id_empresa" => $pessoa->getId_empresa(),
                 "rg" => $pessoa->getRg(), 
+                "genero" => $pessoa->getGenero(),
                 "criado_por" => $_SESSION["id_usuario"]
                 );
         

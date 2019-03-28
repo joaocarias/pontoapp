@@ -52,6 +52,7 @@ class FuncionarioController extends Controller {
      public function cadastrar($request, $response){       
         $nome = filter_input(INPUT_POST, "tx_nome", FILTER_SANITIZE_STRING); 
         $apelido = filter_input(INPUT_POST, "tx_apelido", FILTER_SANITIZE_STRING); 
+        $genero = filter_input(INPUT_POST, "tx_genero", FILTER_SANITIZE_STRING);
         $cpf = filter_input(INPUT_POST, "tx_cpf", FILTER_SANITIZE_STRING); 
         $pis = filter_input(INPUT_POST, "tx_pis", FILTER_SANITIZE_STRING); 
         $matricula = filter_input(INPUT_POST, "tx_matricula", FILTER_SANITIZE_STRING);
@@ -78,7 +79,7 @@ class FuncionarioController extends Controller {
             $retornoEndereco = $repositorioEndereco->insertObj($objEndereco);
                     
             if(!is_null($retornoEndereco) && $retornoEndereco['id'] > 0){
-                $objPessoa = new Pessoa($nome, $apelido, $data_de_nascimento, $cpf, $rg, $retornoEndereco['id'], $_SESSION['id_empresa']); 
+                $objPessoa = new Pessoa($nome, $apelido, $data_de_nascimento, $cpf, $rg, $genero, $retornoEndereco['id'], $_SESSION['id_empresa']); 
                 $repositorioPessoa = new RepositorioPessoa();
                 $retornoPessoa = $repositorioPessoa->insertPessoa($objPessoa);
                 if(!is_null($retornoPessoa) && $retornoPessoa['id'] > 0){
@@ -98,5 +99,17 @@ class FuncionarioController extends Controller {
         }else{
             return $this->response->withHeader('Location', '/funcionario?r=error');
         }
+    }
+    
+    public function importacao($request, $response){
+        $controller = 'Funcionario';
+        $action = 'importacao';
+       
+        $vars['action'] = $action;
+        $vars['controller'] = $controller;      
+        $_SESSION['controller'] = $controller;
+        $_SESSION['action'] = $action;     
+       
+       return $this->view->render($response, 'layout_dashboard.php', $vars);
     }
 }

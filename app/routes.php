@@ -49,6 +49,7 @@ $app->get('/funcionario/index','App\Controllers\FuncionarioController:index');
 $app->get('/funcionario/cadastro','App\Controllers\FuncionarioController:cadastro');
 $app->post('/funcionario/cadastrar','App\Controllers\FuncionarioController:cadastrar');
 $app->get('/funcionario/detalhes','App\Controllers\FuncionarioController:detalhes');
+$app->get('/funcionario/importacao','App\Controllers\FuncionarioController:importacao');
 
 $app->get('/lotacao/cadastro','App\Controllers\LotacaoController:cadastro');
 $app->post('/lotacao/cadastrar','App\Controllers\LotacaoController:cadastrar');

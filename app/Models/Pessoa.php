@@ -10,6 +10,7 @@ class Pessoa extends Model {
     private $data_de_nascimento;
     private $cpf;
     private $rg;
+    private $genero;
     private $id_endereco;
     private $id_empresa;
     private $dt_criacao;
@@ -18,7 +19,8 @@ class Pessoa extends Model {
     private $modificado_por;
     private $ativo;
     
-    function __construct($nome = null, $apelido = null, $data_de_nascimento = null, $cpf = null, $rg = null, $id_endereco = null, $id_empresa = null) {
+    
+    function __construct($nome = null, $apelido = null, $data_de_nascimento = null, $cpf = null, $rg = null, $genero = null, $id_endereco = null, $id_empresa = null) {
         $this->nome = $nome;
         $this->apelido = $apelido;
         $this->data_de_nascimento = $data_de_nascimento;
@@ -26,6 +28,7 @@ class Pessoa extends Model {
         $this->rg = $rg;
         $this->id_endereco = $id_endereco;
         $this->id_empresa = $id_empresa;
+        $this->genero = $genero;
     }
 
     function getId_pessoa() {
@@ -47,7 +50,16 @@ class Pessoa extends Model {
     function getCpf() {
         return $this->cpf;
     }
+    
+    function getGenero() {
+        return $this->genero;
+    }
 
+    function setGenero($genero) {
+        $this->genero = $genero;
+    }
+
+    
     function getRg() {
         return $this->rg;
     }

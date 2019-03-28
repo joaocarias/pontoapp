@@ -19,7 +19,7 @@
        <div class="row">
           <div class="col-lg-12">
               <a href="/funcionario/cadastro"><button class="btn btn-primary">Cadastar</button></a>         
-              <a href="/funcionario/importar"><button class="btn btn-info">Importar</button></a>
+              <a href="/funcionario/importacao"><button class="btn btn-info">Importar</button></a>
           </div>
            
        </div>
