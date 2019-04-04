@@ -36,4 +36,27 @@ class RepositorioLotacaoJornadaDeTrabalho implements IRepositorioLotacaoJornadaD
         return $arrayRetorno;
     }
 
+    public function getObjPorIdLotacao($id): LotacaoJornadaDeTrabalho {
+        $sql = " SELECT * FROM tb_lotacao_jornada_de_trabalho WHERE id_lotacao = '{$id}' AND ativo = '1'  ";
+        $obj = new LotacaoJornadaDeTrabalho();
+                
+        $dados = $obj->selectObj($sql);        
+        
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);
+                $obj->setId($row->id);
+                $obj->setId_jornada_de_trabalho($row->id_jornada_de_trabalho);                
+                $obj->setModificado_por($row->modificado_por);                
+                $obj->setId_lotacao($row->id_lotacao);
+            }                
+            return $obj;
+        }else{
+            return new LotacaoJornadaDeTrabalho();
+        }
+    }
+
 }

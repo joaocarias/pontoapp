@@ -22,10 +22,11 @@ class JornadaDeTrabalho extends Model {
     private $dt_modificacao;
     private $modificado_por;
     private $ativo;
-    
+    private $hora_trabalho;
+            
     function __construct($id_empresa = null, $id_tipo_jornada_de_trabalho = null, $descricao = null
             , $seg = 0, $ter = 0, $qua = 0, $qui = 0, $sex = 0, $sab = 0, $dom= 0
-            , $num_platoes = 0, $carga_plantao = 0) {
+            , $num_platoes = 0, $carga_plantao = 0, $hora_trabalho = 0) {
         $this->id_empresa = $id_empresa;
         $this->id_tipo_jornada_de_trabalho = $id_tipo_jornada_de_trabalho;
         $this->descricao = $descricao;
@@ -38,6 +39,7 @@ class JornadaDeTrabalho extends Model {
         $this->dom = $dom;
         $this->num_platoes = $num_platoes;
         $this->carga_plantao = $carga_plantao;
+        $this->hora_trabalho = $hora_trabalho;
     }
         
     function getId() {
@@ -182,5 +184,13 @@ class JornadaDeTrabalho extends Model {
 
     function setId_empresa($id_empresa) {
         $this->id_empresa = $id_empresa;
+    }
+    
+    function getHora_trabalho() {
+        return $this->hora_trabalho;
+    }
+
+    function setHora_trabalho($hora_trabalho) {
+        $this->hora_trabalho = $hora_trabalho;
     }
 }

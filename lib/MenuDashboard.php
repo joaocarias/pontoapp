@@ -39,6 +39,7 @@ class MenuDashboard {
             
         '.$this->getItem($stringsArr['dashboard']).'
         '.$this->getItem($stringsArr['funcionario']).'
+        '.$this->getItem($stringsArr['ponto']).'
         '.$this->getItem($stringsArr['unidade']).'
         '.$this->getItem($stringsArr['funcao']).'
         '.$this->getItem($stringsArr['feriado']).'

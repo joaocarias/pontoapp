@@ -10,4 +10,5 @@ interface IRepositorioLotacao {
     public function excluirLotacao(Lotacao $obj);
     public function getArrayBasic();
     public function getLotacaoPorFuncionario($id);
+    public function getLotacaoPorUnidade($id);
 }

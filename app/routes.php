@@ -1,9 +1,19 @@
 <?php
 
+$logado = null;
+
+if(isset($_SESSION['logado'])){
+    $logado = $_SESSION['logado'];
+}
+
 //Admin 
 $app->post('/login/logar','App\Controllers\LoginController:logar');
 $app->get('/login/logout', 'App\Controllers\LoginController:logout');
+$app->get('/', 'App\Controllers\LoginController:login');
+$app->get('/login', 'App\Controllers\LoginController:login');
 
+if(isset($logado) && !is_null($logado) && $logado > 0){
+    
 $app->get('/dashboard/index','App\Controllers\DashboardController:index');
 $app->get('/dashboard','App\Controllers\DashboardController:index');
 
@@ -58,11 +68,20 @@ $app->get('/jornadadetrabalho/cadastro','App\Controllers\JornadaDeTrabalhoContro
 
 $app->post('/lotacaojornadadetrabalho/cadastrar','App\Controllers\LotacaoJornadaDeTrabalhoController:cadastrar');
 
+$app->get('/ponto','App\Controllers\PontoController:index');
+$app->get('/ponto/index','App\Controllers\PontoController:index');
+$app->get('/ponto/exportacao','App\Controllers\PontoController:exportacao');
+$app->get('/ponto/exportar','App\Controllers\PontoController:exportar');
+
+
+}else{
+    Header('Location', '/login');
+}
+
 
 //Site
 //$app->get('/', 'App\Controllers\HomeController:index');
 //$app->get('/home', 'App\Controllers\HomeController:index');
 //$app->get('/contato', 'App\Controllers\HomeController:contato');
 //$app->get('/sobre', 'App\Controllers\HomeController:sobre');
-$app->get('/', 'App\Controllers\LoginController:login');
-$app->get('/login', 'App\Controllers\LoginController:login');
+

@@ -38,9 +38,9 @@ class Strings {
         $JornadaDeTrabalho = new ItemString('jornadadetrabalho','Jornada de Trabalho', 'fas fa-home', 'jornadadetrabalho','Jornada de Trabalho');
         $this->strings[$JornadaDeTrabalho->getId()] = $JornadaDeTrabalho;
         
-        
- 
-        
+        $ponto  = new ItemString('ponto','Ponto', 'far fa-clock', 'ponto','Ponto');
+        $this->strings[$ponto->getId()] = $ponto;
+                
     }
     
     function getStrings() {

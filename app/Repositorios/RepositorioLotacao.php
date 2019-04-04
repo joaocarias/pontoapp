@@ -158,4 +158,33 @@ class RepositorioLotacao implements IRepositorioLotacao{
         
     }
 
+    public function getLotacaoPorUnidade($id) {
+        $sql = " SELECT * FROM tb_lotacao WHERE id_unidade = '{$id}' AND ativo = '1' order by id asc ";
+        $obj = new Lotacao();
+        $array = array();
+        $dados = $obj->selectObj($sql);        
+        
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                $obj = new Lotacao();
+                
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);                        
+                $obj->setModificado_por($row->modificado_por);
+                $obj->setDt_inicio_lotacao($row->dt_inicio_lotacao);
+                $obj->setDt_fim_lotacao($row->dt_fim_lotacao);
+                $obj->setId($row->id);
+                $obj->setId_funcao($row->id_funcao);
+                $obj->setId_funcionario($row->id_funcionario);
+                $obj->setId_unidade($row->id_unidade);
+                array_push($array, $obj);
+            }                
+            return $array;
+        }else{
+           return array();
+        }
+    }
+
 }

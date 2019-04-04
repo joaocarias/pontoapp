@@ -7,7 +7,7 @@ use App\Models\TipoJornadaDeTrabalho;
 class RepositorioTipoJornadaDeTrabalho implements IRepositorioTipoJornadaDeTrabalho {
   
     public function getObj($id): TipoJornadaDeTrabalho {
-        $sql = " SELECT * FROM tb_tipo_jornada_de_trabalho WHERE id = {$id} AND ativo = '1' AND id_empresa = '{$_SESSION['id_empresa']}' ";
+        $sql = " SELECT * FROM tb_tipo_jornada_de_trabalho WHERE id = '{$id}' AND ativo = '1' AND id_empresa = '{$_SESSION['id_empresa']}' ";
         $obj = new TipoJornadaDeTrabalho();            
         $dados = $obj->selectObj($sql);        
                
@@ -18,7 +18,7 @@ class RepositorioTipoJornadaDeTrabalho implements IRepositorioTipoJornadaDeTraba
                 $obj->setCriado_por($row->criado_por);
                 $obj->setDt_criacao($row->dt_criacao);
                 $obj->setDt_modificacao($row->dt_modificacao);
-                $obj->setId_funcao($row->id_funcao);                
+                $obj->setId($row->id);                
                 $obj->setModificado_por($row->modificado_por);            
                 $obj->setNome($row->nome);
                 $obj->setId_empresa($row->id_empresa);

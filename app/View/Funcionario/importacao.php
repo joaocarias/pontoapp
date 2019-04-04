@@ -53,7 +53,7 @@
        <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h2 class="mb-3 line-head" id="containers">Cadastro</h2>
+              <h2 class="mb-3 line-head" id="containers">Importar</h2>
             </div>
           </div>
         </div>       
@@ -114,10 +114,15 @@
                 }
                 
                 $_dt_nascimento = explode(" ", $_servidor->getDt_nascimento_servidor());
-                        
+                
+                $_bloquerar_pis = true;
+                if(is_null($_servidor->getPis()) or $_servidor->getPis() == ""){
+                    $_bloquerar_pis = false;
+                }
+                
                 echo Form::beginForm("POST", "/funcionario/cadastrar")  
                         . Form::getInput("text", "tx_cpf", "CPF", "CPF", "col-md-3", true, $_cpf, true, "999.999.999-99" )
-                        . Form::getInput("text", "tx_pis", "PIS", "PIS", "col-md-3", true, $_servidor->getPis(), false, "99999999999" )    
+                        . Form::getInput("text", "tx_pis", "PIS", "PIS", "col-md-3", true, $_servidor->getPis(), $_bloquerar_pis, "99999999999" )    
                         . Form::getInput("text", "tx_matricula", "Matrícula", "Matrícula", "col-md-3", true, null, false, "99999999" )
                         . Form::getInput("text", "tx_rg", "RG", "RG", "col-md-3", false, null, false, null, 20 )
                         

@@ -259,5 +259,46 @@ ALTER TABLE `tb_lotacao_registra_ponto` ADD CONSTRAINT `fk_id_lotacao_lotacao_re
 select * from tb_lotacao_registra_ponto;
 
 use bd_ponto_app;
+
+select * from tb_pessoa;
+select * from tb_usuario;
+
+create table tb_registro_de_ponto
+(
+	id int(11) not null auto_increment,
+    id_registro int(11) null,
+    id_servidor int(11) null,
+    id_funcionario int(11) not null, 
+    id_empresa int(11) not null,
+    dt_entrada datetime,
+    dt_saida datetime,
+    tempo_atividade bigint,
+    ponto_em_aberto bit default 1,
+    nsr_entrada int(11),
+    nsr_saida int(11),
+    id_relogio_entrada int(11),
+    id_relogio_saida int(11),
+  `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `criado_por` int(11) NOT NULL,
+  `dt_modificacao` datetime DEFAULT NULL,
+  `modificado_por` int(11) DEFAULT NULL,
+  `ativo` smallint(4) DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_criado_por_registro_de_ponto` (`criado_por`), 
+  CONSTRAINT `fk_criado_por_registro_de_ponto` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+use bd_ponto_app;
+
+alter table tb_pessoa add column genero varchar(20);
 select * from tb_funcionario;
 alter table tb_funcionario add column matricula int(11);
+
+select * from tb_lotacao;
+select * from tb_lotacao_jornada_de_trabalho;
+
+select * from tb_tipo_jornada_de_trabalho;
+select * from tb_jornada_de_trabalho;
+
+alter table tb_jornada_de_trabalho add column hora_trabalho int(11) default 60;
+update tb_jornada_de_trabalho set hora_trabalho = 60 where ativo = 1;
