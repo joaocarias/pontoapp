@@ -47,9 +47,10 @@ use App\Models\Competencia;
         }else{
             $_ano_competencia = $ano_atual;
             $_mes_competencia = $mes_atual;
+            
         }
     }else{    
-        $competencia = $repositorioCompetencia->getObj($_id_competencia);
+        $competencia = $repositorioCompetencia->getObjMesAno($mes_atual, $ano_atual);
     }
     
     ?>
@@ -85,12 +86,10 @@ use App\Models\Competencia;
                       
                      <?php 
                      
-                       
                         echo Form::beginForm('get', '/ponto/exportacao')
                           .Form::getInput('date', "tx_de", "De", "", "col-md-4", TRUE, $_de)
-                          .Form::getInput('date', "tx_ate", "Até", "", "col-md-4", TRUE, $_ate)
-                          
-                          . Form::getSelect($repositorioCompetencia->getArrayBasic(), "tx_id_competencia", "Competência (Mês/Ano)", "col-md-4", true, $competencia->getId())
+                          .Form::getInput('date', "tx_ate", "Até", "", "col-md-4", TRUE, $_ate)                          
+                          .Form::getSelect($repositorioCompetencia->getArrayBasic(), "tx_id_competencia", "Competência (Mês/Ano)", "col-md-4", true, $competencia->getId())
                           .Form::getInputButtonSubmit("buscar", "Selecionar", "btn-success btn-sm")
                         
                   .Form::endForm(); 
@@ -102,7 +101,7 @@ use App\Models\Competencia;
           <div class="col-lg-12">
          <div class="card" >
                   <div class="card-body border-success">
-                      <div class="h3 text-center">Competência: <?="{$_mes_competencia}/{$_ano_competencia}"?></div>
+                      <div class="h3 text-center">Competência: <?="{$_mes_competencia}/{$competencia->getAno()}"?></div>
               <?php
               
                 $repositorioUnidade = new RepositorioUnidade();
