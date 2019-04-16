@@ -146,7 +146,7 @@ use App\Models\Competencia;
                                     . '<td>'.$funcionario->getPis().'</td>'
                                     . '<td>'.$funcao->getNome().'</td>'
                                     . '<td>'.$tipoJornadaDeTrabalho->getNome().'</td>'
-                                    . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId(), $_de, $_ate))/60 .' Horas</td>'                                    
+                                    . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId()))/60 .' Horas</td>'                                    
                                 . '</tr>';
                              $contValido++;
                         }else{
@@ -158,7 +158,7 @@ use App\Models\Competencia;
                                     . '<td>'.$funcionario->getPis().'</td>'
                                     . '<td>'.$funcao->getNome().'</td>'
                                     . '<td>'.$tipoJornadaDeTrabalho->getNome().'</td>'
-                                     . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId(), $_de, $_ate))/60 .' Horas</td>'
+                                     . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId())) / 60 .' Horas</td>'
                                 . '</tr>';
                             $contInvalido++;
                         }  

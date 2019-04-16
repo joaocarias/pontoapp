@@ -8,10 +8,14 @@ use Lib\DownloadTXT;
 use App\Repositorios\RepositorioUnidade;
 use App\Repositorios\RepositorioLotacao;
 use App\Repositorios\RepositorioFuncionario;    
+use App\Repositorios\RepositorioJornadaDeTrabalho;
+use App\Repositorios\RepositorioLotacaoJornadaDeTrabalho;
 
 use App\Models\Unidade;
 use App\Models\Lotacao;
 use App\Models\Funcionario;
+use App\Models\LotacaoJornadaDeTrabalho;
+use App\Models\JornadaDeTrabalho;
 
 class PontoController extends Controller {
     public function index($request, $response){
@@ -55,14 +59,20 @@ class PontoController extends Controller {
             $repositorioLotacao = new RepositorioLotacao();
             $lotacoes = $repositorioLotacao->getLotacaoPorUnidade($unidade->getId_unidade());
 
-            $_ponto_evento = "7010";
-            $_hora_ponto = "000000";
+            $_ponto_evento = "7010";            
             $_ano_mes = "{$ano_competencia}".str_pad($mes_competencia, 2, '0', STR_PAD_LEFT);
       
             foreach($lotacoes as $lotacao){
                 $repositorioFuncionario = new RepositorioFuncionario();
                 $funcionario = $repositorioFuncionario->getFuncionario($lotacao->getId_funcionario());
 
+                $repositorioLotacaoJornadaDeTrabalho = new RepositorioLotacaoJornadaDeTrabalho();
+                $lotacaoJornadaDeTrabalho = $repositorioLotacaoJornadaDeTrabalho->getObjPorIdLotacao($lotacao->getId());
+                $repositorioJornadaDeTrabalho = new RepositorioJornadaDeTrabalho();
+                $jornadaDeTrabalho = $repositorioJornadaDeTrabalho->getObj($lotacaoJornadaDeTrabalho->getId_jornada_de_trabalho());
+                                             
+                $_hora_ponto = ($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId()))/60;
+                
                 if(!is_null($funcionario) && !is_null($funcionario->getMatricula()) && $funcionario->getMatricula() > 0 && $funcionario->getMatricula() <= 99999999 ){
                     $meuTexto = $meuTexto . str_pad($funcionario->getMatricula() , 8 , '0' , STR_PAD_LEFT) 
                         .$_ponto_evento
