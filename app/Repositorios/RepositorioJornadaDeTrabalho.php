@@ -3,6 +3,7 @@
 namespace App\Repositorios;
 use App\Interfaces\IRepositorioJornadaDeTrabalho;
 use App\Models\JornadaDeTrabalho;
+use App\Repositorios\RepositorioFeriado;
 
 class RepositorioJornadaDeTrabalho implements IRepositorioJornadaDeTrabalho{
     
@@ -87,6 +88,7 @@ class RepositorioJornadaDeTrabalho implements IRepositorioJornadaDeTrabalho{
                 $obj->setSex($row->sex);
                 $obj->setTer($row->ter);
                 $obj->setHora_trabalho($row->hora_trabalho);
+                $obj->setCarga_plantao($row->carga_plantao);
             }                
             return $obj;
         }else{
@@ -95,7 +97,93 @@ class RepositorioJornadaDeTrabalho implements IRepositorioJornadaDeTrabalho{
     }
     
     public function getCargaMensal($id){
-        return 0;
+        if($id > 0){
+            $obj = $this->getObj($id);
+
+            $horaTrabalho = $obj->getHora_trabalho();
+            
+            $dom = $obj->getDom();
+            $qua = $obj->getQua();
+            $qui = $obj->getQui();
+            $ter = $obj->getTer();
+            $seg = $obj->getSeg();
+            $sex = $obj->getSex();
+            $sab = $obj->getSab();
+            
+            $numPlatoes = $obj->getNum_platoes();
+            $cargaPlantao = $obj->getCarga_plantao();
+            
+            $ch = ($dom + $sab) + ($seg + $ter + $qua + $qui + $sex) + ($numPlatoes * $cargaPlantao * $horaTrabalho); 
+            
+            return $ch;    
+        }else{
+            return "";
+        }        
+    }
+    
+    public function getCargaPeriodo($id, $dataInicio = null, $dataFim = null){
+        $obj = $this->getObj($id);
+        $repoFeriado = new RepositorioFeriado();
+                
+        $diaInicio = 1;
+        $mesInicio = date('m');
+        $anoInicio = date('Y');    
+        
+        if($dataInicio){             
+            $dataExplode = explode("-", $dataInicio);   
+            list($anoInicio, $mesInicio, $diaInicio) = $dataExplode;
+        }
+                
+        $mesFinal = date('m');
+        $anoFinal = date("Y"); 
+        $diaFinal = date("t", mktime(0,0,0,$mesFinal,'01',$anoFinal));    
+        if($dataFim){
+            $dataExplode = explode("-", $dataFim);   
+            list($anoFinal, $mesFinal, $diaFinal) = $dataExplode;
+        }
+        
+        $feriados = $repoFeriado->getFeriados($anoInicio."-".$mesInicio."-".$diaInicio, $anoFinal."-".$mesFinal."-".$diaFinal);
+                
+        $ch = 0;
+        for($i = $diaInicio; $i <= $diaFinal; $i++){
+            $verificado = $repoFeriado->verificaFeriado($anoFinal.'-'.$mesFinal.'-'.$i, $feriados);
+            if(!$verificado){
+                $data = date($anoFinal.'-'.$mesFinal.'-'.$i);
+                $ch += $this->getCargaDiaDaSemana($obj, $data);    
+            }            
+        }
+        
+        return $ch;        
+    }
+    
+    private function getCargaDiaDaSemana(JornadaDeTrabalho $obj, $data){
+        $diasemana_numero = date('w', strtotime($data));
+        switch ($diasemana_numero){
+            case 0:
+                return $obj->getDom();
+                break;
+            case 1:
+                return $obj->getSeg();
+                break;
+            case 2:
+                return $obj->getTer();
+                break;
+            case 3:
+                return $obj->getQua();
+                break;
+            case 4:
+                return $obj->getQui();
+                break;
+            case 5:
+                return $obj->getSex();
+                break;
+            case 6:
+                return $obj->getSab();
+                break;
+            default :
+                return 0;
+                break;
+        }
     }
 
 }

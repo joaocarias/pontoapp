@@ -9,4 +9,5 @@ interface IRepositorioFeriado {
     public function getObj($id);
     public function updateFeriado(Feriado $atual, Feriado $editado);
     public function excluirFeriado(Feriado $unidade);
+    public function verificaFeriado($data, $arrayFeriados) : bool;    
 }

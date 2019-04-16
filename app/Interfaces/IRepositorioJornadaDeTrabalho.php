@@ -8,4 +8,5 @@ interface IRepositorioJornadaDeTrabalho {
     public function getArrayBasic($idTipo = null);
     public function getObj($id) : JornadaDeTrabalho;
     public function getCargaMensal($id);
+    public function getCargaPeriodo($id, $dataInicio = null, $dataFim = null);
 }

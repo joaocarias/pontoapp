@@ -13,9 +13,45 @@ use App\Repositorios\RepositorioLotacaoJornadaDeTrabalho;
 use App\Models\LotacaoJornadaDeTrabalho;
 use App\Repositorios\RepositorioJornadaDeTrabalho;
 use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
+use Lib\Form;
+use App\Repositorios\RepositorioCompetencia;
+use App\Models\Competencia;
  
     $subNav = new SubNavPrimicipalDashboard();
-            
+    
+    $_de = filter_input(INPUT_GET, "tx_de", FILTER_SANITIZE_STRING) ;    
+    $_ate = filter_input(INPUT_GET, "tx_ate", FILTER_SANITIZE_STRING);
+    $_id_competencia = filter_input(INPUT_GET, "tx_id_competencia", FILTER_SANITIZE_STRING);    
+    
+    $repositorioCompetencia = new RepositorioCompetencia();
+    
+    $mes_atual = date('m');
+    $ano_atual = date('Y');
+    
+    $_mes_competencia = $mes_atual;
+    $_ano_competencia = $ano_atual;
+    
+    if(!$_de){
+        $_de = "2019-03-15";    
+    }
+    if(!$_ate){
+        $_ate = "2019-04-14";
+    }
+    
+    $competencia = new Competencia();
+    if($_id_competencia){        
+        $competencia = $repositorioCompetencia->getObj($_id_competencia);
+        if(isset($competencia) and !is_null($competencia) and $competencia->getId() > 0){
+            $_mes_competencia =  str_pad($competencia->getMes() , 2 , '0' , STR_PAD_LEFT);
+            $_ano_competencia = $competencia->getAno();
+        }else{
+            $_ano_competencia = $ano_atual;
+            $_mes_competencia = $mes_atual;
+        }
+    }else{    
+        $competencia = $repositorioCompetencia->getObj($_id_competencia);
+    }
+    
     ?>
     <main class="app-content">
         
@@ -31,6 +67,7 @@ use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
         </div>
       </div>       
       
+            
        <!-- Containers-->
       <div class="tile mb-4">
        <div class="row">
@@ -43,7 +80,29 @@ use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
                           
       <div class="row">
           <div class="col-lg-12">
-            
+              <div class="card mb-3">
+                  <div class="card-body border-success">
+                      
+                     <?php 
+                     
+                       
+                        echo Form::beginForm('get', '/ponto/exportacao')
+                          .Form::getInput('date', "tx_de", "De", "", "col-md-4", TRUE, $_de)
+                          .Form::getInput('date', "tx_ate", "Até", "", "col-md-4", TRUE, $_ate)
+                          
+                          . Form::getSelect($repositorioCompetencia->getArrayBasic(), "tx_id_competencia", "Competência (Mês/Ano)", "col-md-4", true, $competencia->getId())
+                          .Form::getInputButtonSubmit("buscar", "Selecionar", "btn-success btn-sm")
+                        
+                  .Form::endForm(); 
+              ?>      
+                  </div>
+              </div>
+          </div>
+          
+          <div class="col-lg-12">
+         <div class="card" >
+                  <div class="card-body border-success">
+                      <div class="h3 text-center">Competência: <?="{$_mes_competencia}/{$_ano_competencia}"?></div>
               <?php
               
                 $repositorioUnidade = new RepositorioUnidade();
@@ -87,7 +146,7 @@ use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
                                     . '<td>'.$funcionario->getPis().'</td>'
                                     . '<td>'.$funcao->getNome().'</td>'
                                     . '<td>'.$tipoJornadaDeTrabalho->getNome().'</td>'
-                                    . '<td>'.$repositorioJornadaDeTrabalho->getCargaMensal($jornadaDeTrabalho->getId()).'</td>'                                    
+                                    . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId(), $_de, $_ate))/60 .' Horas</td>'                                    
                                 . '</tr>';
                              $contValido++;
                         }else{
@@ -99,7 +158,7 @@ use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
                                     . '<td>'.$funcionario->getPis().'</td>'
                                     . '<td>'.$funcao->getNome().'</td>'
                                     . '<td>'.$tipoJornadaDeTrabalho->getNome().'</td>'
-                                     . '<td>'.$repositorioJornadaDeTrabalho->getCargaMensal($jornadaDeTrabalho->getId()).'</td>'
+                                     . '<td>'.($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId(), $_de, $_ate))/60 .' Horas</td>'
                                 . '</tr>';
                             $contInvalido++;
                         }  
@@ -149,17 +208,19 @@ use App\Repositorios\RepositorioTipoJornadaDeTrabalho;
                     $target = '';
                     $bloquear = 'disabled';
                     if($contValido > 0){
-                        $link = 'href="/ponto/exportar?id='.$obj->getId_unidade().'"';
+                        $link = 'href="/ponto/exportar?id='.$obj->getId_unidade().'&de='.$_de.'&ate='.$_ate.'&mes_competencia='.$_mes_competencia.'&ano_competencia='.$_ano_competencia.'"';
                         $target='target="_blank"';
                         $bloquear = "";
                     }
-                    // <a href="gerartxt.php?idunidade='.$row->id_unidade.'&mes='.$_meuMes.'&ano='.$_meuAno.'" target="_blank"><button type="button" class="btn btn-info btn-sm">Gerar Arquivo de Pagamento (TXT)</button></a>
-                      
+                    
                     echo '<div class="text-right"><a '.$link.' '.$target.' '.$bloquear.' class="btn btn-info btn-sm"><i class="fas fa-download"></i> Gerar Arquivo </a></div>';
                     
                 }
                 
               ?>
+                  </div>
+         </div>
+             
           </div>
           
         </div>

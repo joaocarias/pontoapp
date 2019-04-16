@@ -40,7 +40,11 @@ class PontoController extends Controller {
     
     public function exportar($request, $response){
         $idUnidade = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING); 
-
+        $de = filter_input(INPUT_GET, "de", FILTER_SANITIZE_STRING); 
+        $ate = filter_input(INPUT_GET, "ate", FILTER_SANITIZE_STRING);
+        $mes_competencia = filter_input(INPUT_GET, "mes_competencia", FILTER_SANITIZE_STRING);
+        $ano_competencia = filter_input(INPUT_GET, "ano_competencia", FILTER_SANITIZE_STRING);
+         
         if($idUnidade){       
             $nomeArquivo = $idUnidade.".txt";
             $meuTexto = "";  
@@ -51,9 +55,9 @@ class PontoController extends Controller {
             $repositorioLotacao = new RepositorioLotacao();
             $lotacoes = $repositorioLotacao->getLotacaoPorUnidade($unidade->getId_unidade());
 
-            $_ponto_evento = "2025";
+            $_ponto_evento = "7010";
             $_hora_ponto = "000000";
-            $_ano_mes = "201904";
+            $_ano_mes = "{$ano_competencia}".str_pad($mes_competencia, 2, '0', STR_PAD_LEFT);
       
             foreach($lotacoes as $lotacao){
                 $repositorioFuncionario = new RepositorioFuncionario();

@@ -148,4 +148,12 @@ class RepositorioFeriado implements IRepositorioFeriado{
         return $retorno;
     }
 
+    public function verificaFeriado($data, $arrayFeriados) : bool{        
+        foreach ($arrayFeriados as $feriado){
+           if($feriado->getDt_feriado() == $data){
+               return true;
+           }
+        }        
+        return false;
+    }
 }
