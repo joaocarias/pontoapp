@@ -156,4 +156,30 @@ class RepositorioEndereco implements IRepositorioEndereco{
         
         return $retorno;   
     }
+
+    public function excluir(Endereco $obj) {
+        $tabela = "tb_endereco";
+        $stringLog = "DELETE: ";
+        $stringSet = ", ativo = '0'";
+        $stringLog .= " ativo: 1 : 0" ;
+               
+        $sql =  " UPDATE {$tabela} SET "
+                . " modificado_por = '{$_SESSION['id_usuario']}'"
+                . " , dt_modificacao = NOW() "
+                . " {$stringSet} "
+                . "WHERE id_endereco = '{$obj->getId_endereco()}'; ";            
+                                
+        $retorno = $obj->update($sql);
+        $repositorioLog = new RepositorioLogUpdate();
+        if($retorno['msg_tipo']=="success"){
+            $novoLog = new LogUpdate($tabela, $obj->getId_endereco(), $stringLog);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }else{
+            $novoLog = new LogUpdate($tabela, $obj->getId_endereco(), "Error: " . $retorno['msg']);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }
+        
+        return $retorno;
+    }
+
 }

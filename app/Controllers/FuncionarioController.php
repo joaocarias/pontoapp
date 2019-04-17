@@ -11,6 +11,8 @@ use App\Models\Endereco;
 use App\Repositorios\RepositorioEndereco;
 use App\Models\Usuario;
 use App\Repositorios\RepositorioUsuario;
+use App\Repositorios\RepositorioLotacao;
+use App\Models\Lotacao;
 
 class FuncionarioController extends Controller {
     public function index($request, $response){
@@ -87,7 +89,7 @@ class FuncionarioController extends Controller {
                     $repositorioFuncionario = new RepositorioFuncionario();
                     $retornoFuncionario = $repositorioFuncionario->insertFuncionario($objFuncionario);
                                         
-                    $objUsuario = new Usuario($retornoPessoa['id'], $cpf, password_hash($novaSenha, PASSWORD_DEFAULT));
+                    $objUsuario = new Usuario($retornoPessoa['id'], $cpf, password_hash("123456", PASSWORD_DEFAULT));
                     $repositorioUsuario = new RepositorioUsuario();
                     $retornoUsuario = $repositorioUsuario->insertObj($objUsuario);
                     
@@ -111,5 +113,40 @@ class FuncionarioController extends Controller {
         $_SESSION['action'] = $action;     
        
        return $this->view->render($response, 'layout_dashboard.php', $vars);
+    }
+    
+    public function exclusao($request, $response){
+        $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+        
+        if($id > 0){            
+            $repositorio = new RepositorioFuncionario();
+            $atual = $repositorio->getFuncionario($id);
+            $retorno = $repositorio->excluir($atual);
+            
+            if($retorno['msg_tipo']=="success"){
+                $repositorioPessoa = new RepositorioPessoa();
+                $p = $repositorioPessoa->getPessoa($atual->getId_pessoa());
+                $retornoPessoa = $repositorioPessoa->excluir($p);
+                
+                if($retornoPessoa['msg_tipo']=="success"){
+                    $repositorioEndereco = new RepositorioEndereco();
+                    $endereco = $repositorioEndereco->getEndereco($p->getId_endereco());
+                    $retornoEndereco = $repositorioEndereco->excluir($endereco);
+                    
+                    $repositorioUsuario = new RepositorioUsuario();
+                    $usuario = $repositorioUsuario->getObjPorIdPessoa($p->getId_pessoa());
+                    $retornoUsuario = $repositorioUsuario->excluir($usuario);
+                }
+                
+                $repositorioLotacao = new RepositorioLotacao();
+                $lotacoes = $repositorioLotacao->getLotacaoPorFuncionario($atual->getId());
+                foreach ($lotacoes as $item){
+                    $retornoLotacao = $repositorioLotacao->excluirLotacao($item);
+                }
+            }
+            return $this->response->withHeader('Location', "/funcionario/index?msg_tipo={$retorno['msg_tipo']}");                
+        }else{
+            return $this->response->withHeader('Location', "/dashboard");
+        }
     }
 }

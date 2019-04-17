@@ -4,6 +4,8 @@ namespace App\Repositorios;
 
 use App\Interfaces\IRepositorioUsuario;
 use App\Models\Usuario;
+use App\Repositorios\RepositorioLogUpdate;
+use App\Models\LogUpdate;
 
 class RepositorioUsuario implements IRepositorioUsuario{
     
@@ -104,4 +106,52 @@ class RepositorioUsuario implements IRepositorioUsuario{
         return $retorno;
     }
 
+    public function getObjPorIdPessoa($id_pessoa): Usuario {
+        $sql = " SELECT * FROM tb_usuario WHERE id_pessoa = '{$id_pessoa}' AND ativo = '1' ";
+        $obj = new Usuario();
+                
+        $dados = $obj->selectObj($sql);        
+        
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);
+                $obj->setId_pessoa($row->id_pessoa);
+                $obj->setId_usuario($row->id_usuario);
+                $obj->setLogin($row->login);
+                $obj->setModificado_por($row->modificado_por);
+                $obj->setSenha($row->senha);
+            }                
+            return $obj;
+        }else{
+            return new Usuario();
+        }        
+    }
+
+    public function excluir(Usuario $obj) {
+        $tabela = "tb_usuario";
+        $stringLog = "DELETE: ";
+        $stringSet = ", ativo = '0'";
+        $stringLog .= " ativo: 1 : 0" ;
+               
+        $sql =  " UPDATE {$tabela} SET "
+                . " modificado_por = '{$_SESSION['id_usuario']}'"
+                . " , dt_modificacao = NOW() "
+                . " {$stringSet} "
+                . "WHERE id_usuario = '{$obj->getId_usuario()}'; ";            
+                                
+        $retorno = $obj->update($sql);
+        $repositorioLog = new RepositorioLogUpdate();
+        if($retorno['msg_tipo']=="success"){
+            $novoLog = new LogUpdate($tabela, $obj->getId_usuario(), $stringLog);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }else{
+            $novoLog = new LogUpdate($tabela, $obj->getId_usuario(), "Error: " . $retorno['msg']);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }
+        
+        return $retorno;
+    }
 }

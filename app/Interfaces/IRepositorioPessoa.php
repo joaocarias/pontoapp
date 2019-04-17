@@ -8,4 +8,5 @@ interface IRepositorioPessoa {
     public function setEmpresa($idPessoa, $idEmpresa);
     public function getPessoaPorCpf($cpf): Pessoa;
     public function insertPessoa(Pessoa $pessoa);
+    public function excluir(Pessoa $obj);
 }

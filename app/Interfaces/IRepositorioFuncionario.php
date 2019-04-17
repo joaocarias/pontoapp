@@ -9,4 +9,5 @@ interface IRepositorioFuncionario {
     public function getFuncionarioPorMatricula($_matricula);
     public function getFuncionarioPorNomeCPFPISMatricula($busca);
     public function getFuncionario($id): Funcionario;
+    public function excluir(Funcionario $obj);
 }

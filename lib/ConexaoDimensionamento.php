@@ -20,7 +20,7 @@ class ConexaoDimensionamento {
     private static function conectar(){       
         try{            
             if(self::$instance_ == null):
-                $dsn = "mysql:host=". self::$local .";dbname=". self::$bdname ;           
+                $dsn = "mysql:host=". self::$local .";dbname=". self::$bdname ."; charset=utf8" ;           
               
                 self::$instance_ = new \PDO($dsn, self::$user, self::$pass);
                 self::$instance_->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

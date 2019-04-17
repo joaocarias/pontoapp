@@ -35,30 +35,15 @@
               <div class="card mb-3 border-success">
                 
                 <div class="card-body">                
-                    
-                       <dl class="dl-horizontal">
-                            <dt>
-                                Nome:
-                            </dt>
-                            <dd>
-                                <?= $empresa->getNome(); ?>
-                            </dd>
-                            <dt>
-                                Nome Fantasia:
-                            </dt>
-                            <dd>
-                                <?= $empresa->getNome_fantasia(); ?>
-                            </dd>
-                            <dt>
-                                CNPJ:
-                            </dt>
-                            <dd>
-                                <?= $empresa->getCnpj(); ?>
-                            </dd>
-                            <dt>
-                                Endereço:
-                            </dt>
-                            <dd>
+                     <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <td>Nome: <strong> <?= $empresa->getNome(); ?> </strong></td>
+                                <td>Nome Fantasia: <strong> <?= $empresa->getNome_fantasia(); ?></strong></td>
+                            </tr>
+                            <tr>
+                                <td> CNPJ: <strong> <?= $empresa->getCnpj(); ?></strong></td>
+                                        <td> Endereço: <strong>
                                 <?php
                                 
                                     $endereco_ = $endereco->getLogradouro();
@@ -70,26 +55,18 @@
                                     $endereco_ = $endereco->getUf() != "" ? $endereco_ . " - " . $endereco->getUf() : $endereco_ . "";
                                     echo $endereco_;
                                 ?>
-                            </dd>   
-                            <dt>
-                                Telefone:
-                            </dt>
-                            <dd>
-                                <?= $endereco->getTelefone(); ?>
-                            </dd>  
-                            <dt>
-                                Celular:
-                            </dt>
-                            <dd>
-                                <?= $endereco->getCelular(); ?>
-                            </dd>
-                            <dt>
-                                E-Mail:
-                            </dt>
-                            <dd>
-                                <?= $endereco->getEmail(); ?>
-                            </dd>
-                       </dl>
+                                                
+                                </strong></td>
+                            </tr>   
+                            <tr>
+                                <td>Telefone: <strong><?= $endereco->getTelefone(); ?></strong></td>
+                                <td> Celular: <strong><?= $endereco->getCelular(); ?></strong></td>
+                            </tr>
+                            <tr>
+                                <td>E-Mail: <strong><?= $endereco->getEmail(); ?></strong></td>
+                                <td></td>
+                        </tbody>
+                     </table>
                     <a class="card-link" href="/empresa/edicao?id=<?= $empresa->getId_empresa();?>">Editar</a>                  
                 </div>
                 

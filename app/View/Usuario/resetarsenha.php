@@ -49,7 +49,7 @@
                 echo Form::beginForm("POST", "/usuario/atualizarsenha")
                         . Form::getHidden("tx_id_usuario", $id_usuario )
                         . Form::getHidden("tx_nova_senha", "123456")
-                        . Form::getInputButtonSubmit("btn_salvar", "Confirmar", "btn-primary")
+                        . Form::getInputButtonSubmit("btn_salvar", "Confirmar", "btn-primary btn-sm")
                         . Form::getButtonCancelar("/dashboard")
                         . Form::endForm();                        
             ?>

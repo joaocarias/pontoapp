@@ -3,6 +3,8 @@
 namespace App\Repositorios;
 use App\Interfaces\IRepositorioPessoa;
 use \App\Models\Pessoa;
+use App\Repositorios\RepositorioLogUpdate;
+use App\Models\LogUpdate;
 
 class RepositorioPessoa implements IRepositorioPessoa {
     
@@ -104,6 +106,31 @@ class RepositorioPessoa implements IRepositorioPessoa {
         
         $arrayRetorno = $pessoa->insert($sql);
         return $arrayRetorno; 
+    }
+
+    public function excluir(Pessoa $obj) {
+        $tabela = "tb_pessoa";
+        $stringLog = "DELETE: ";
+        $stringSet = ", ativo = '0'";
+        $stringLog .= " ativo: 1 : 0" ;
+               
+        $sql =  " UPDATE {$tabela} SET "
+                . " modificado_por = '{$_SESSION['id_usuario']}'"
+                . " , dt_modificacao = NOW() "
+                . " {$stringSet} "
+                . "WHERE id_pessoa = '{$obj->getId_pessoa()}'; ";            
+                                
+        $retorno = $obj->update($sql);
+        $repositorioLog = new RepositorioLogUpdate();
+        if($retorno['msg_tipo']=="success"){
+            $novoLog = new LogUpdate($tabela, $obj->getId_pessoa(), $stringLog);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }else{
+            $novoLog = new LogUpdate($tabela, $obj->getId_pessoa(), "Error: " . $retorno['msg']);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }
+        
+        return $retorno;
     }
 
 }

@@ -48,7 +48,7 @@
                         . Form::getInput("text", "tx_telefone", "Telefone", "(99) 9999-9999", "col-md-3", false, null, false, "(99) 9999-9999")
                         . Form::getInput("text", "tx_celular", "Celular", "(99) 99999-9999", "col-md-3", false, null, false, "(99) 99999-9999")
                         . Form::getInput("text", "tx_email", "E-Mail", "email@email.com", "col-md-6", false, null, false, null, 200)
-                        . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary")
+                        . Form::getInputButtonSubmit("btn_salvar", "Salvar", "btn-primary btn-sm")
                         . Form::getButtonCancelar("/dashboard")
                         . Form::endForm();
                         

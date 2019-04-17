@@ -11,14 +11,14 @@ class RepositorioLotacao implements IRepositorioLotacao{
     public function excluirLotacao(Lotacao $obj) {
         $tabela = "tb_lotacao";
         $stringLog = "DELETE: ";
-        $stringSet .= ", ativo = '0'";
+        $stringSet = ", ativo = '0'";
         $stringLog .= " ativo: 1 : 0" ;
                
         $sql =  " UPDATE {$tabela} SET "
                 . " modificado_por = '{$_SESSION['id_usuario']}'"
                 . " , dt_modificacao = NOW() "
                 . " {$stringSet} "
-                . "WHERE id_feriado = '{$obj->getId_feriado()}'; ";            
+                . "WHERE id = '{$obj->getId()}'; ";            
                                 
         $retorno = $obj->update($sql);
         $repositorioLog = new RepositorioLogUpdate();

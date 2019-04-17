@@ -3,6 +3,8 @@
 namespace App\Repositorios;
 use App\Interfaces\IRepositorioFuncionario;
 use App\Models\Funcionario;
+use App\Repositorios\RepositorioLogUpdate;
+use App\Models\LogUpdate;
 
 class RepositorioFuncionario implements IRepositorioFuncionario {
     
@@ -120,5 +122,29 @@ class RepositorioFuncionario implements IRepositorioFuncionario {
             return new Funcionario();
         }
     }
-
+    
+    public function excluir(Funcionario $obj){
+        $tabela = "tb_funcionario";
+        $stringLog = "DELETE: ";
+        $stringSet = ", ativo = '0'";
+        $stringLog .= " ativo: 1 : 0" ;
+               
+        $sql =  " UPDATE {$tabela} SET "
+                . " modificado_por = '{$_SESSION['id_usuario']}'"
+                . " , dt_modificacao = NOW() "
+                . " {$stringSet} "
+                . "WHERE id = '{$obj->getId()}'; ";            
+                                
+        $retorno = $obj->update($sql);
+        $repositorioLog = new RepositorioLogUpdate();
+        if($retorno['msg_tipo']=="success"){
+            $novoLog = new LogUpdate($tabela, $obj->getId(), $stringLog);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }else{
+            $novoLog = new LogUpdate($tabela, $obj->getId(), "Error: " . $retorno['msg']);            
+            $ret = $repositorioLog->insertObj($novoLog);
+        }
+        
+        return $retorno;
+    }
 }

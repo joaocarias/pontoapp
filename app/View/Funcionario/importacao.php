@@ -16,29 +16,35 @@
     
     $_array_genero[] = []; 
     
-//    $_pis = filter_input(INPUT_GET, "pis", FILTER_SANITIZE_STRING);
-//    $_matricula = filter_input(INPUT_GET, "matricula", FILTER_SANITIZE_STRING);
-//  
     $_servidor = new Servidor();
     $_pessoa = new Pessoa();
-//    $_funcionario = new Funcionario();
+    $mensagemPessoaCadastrada = false;
+
     $encontrado = false;
     $buscar = true;
     
     if($_cpf){
+        $repositorioPessoa = new RepositorioPessoa();
+        $pessoaTmp = $repositorioPessoa->getPessoaPorCpf($_cpf);
         
-        $repositorioServidor = new RepositorioServidor();
-        $_servidor = $repositorioServidor->getServidorCPF($_cpf);
-        
-        if((!is_null($_servidor->getNome_servidor()) && $_servidor->getNome_servidor() != "")){
+        if($pessoaTmp->getId_pessoa() > 0){
+            $mensagemPessoaCadastrada = true;
+            $buscar = true;    
             $encontrado = true;
-        }       
-        
-        if($encontrado){
-            $buscar = false;
         }else{
-            $buscar = true;
-        }
+            $repositorioServidor = new RepositorioServidor();
+            $_servidor = $repositorioServidor->getServidorCPF($_cpf);
+
+            if((!is_null($_servidor->getNome_servidor()) && $_servidor->getNome_servidor() != "")){
+                $encontrado = true;
+            }       
+
+            if($encontrado){
+                $buscar = false;
+            }else{
+                $buscar = true;
+            }  
+        }       
     }else{
         $_cpf = "";        
     }
@@ -73,6 +79,19 @@
                           </div>
                         </div>
                       </div>';                
+            }
+            
+            if($_cpf != "" && $mensagemPessoaCadastrada){
+                echo ' <div class="row">
+                        <div class="col-lg-12">           
+                            <div class="bs-component">
+                                <div class="alert alert-dismissible alert-warning">
+                                    <button class="close" type="button" data-dismiss="alert">×</button>                
+                                    <strong>Atenção!</strong> Já existe um Cadastro de Funcionário com o CPF informado!
+                            </div>
+                          </div>
+                        </div>
+                      </div>';
             }
     ?>
        <div class="row">

@@ -60,6 +60,7 @@ $app->get('/funcionario/cadastro','App\Controllers\FuncionarioController:cadastr
 $app->post('/funcionario/cadastrar','App\Controllers\FuncionarioController:cadastrar');
 $app->get('/funcionario/detalhes','App\Controllers\FuncionarioController:detalhes');
 $app->get('/funcionario/importacao','App\Controllers\FuncionarioController:importacao');
+$app->get('/funcionario/exclusao','App\Controllers\FuncionarioController:exclusao');
 
 $app->get('/lotacao/cadastro','App\Controllers\LotacaoController:cadastro');
 $app->post('/lotacao/cadastrar','App\Controllers\LotacaoController:cadastrar');

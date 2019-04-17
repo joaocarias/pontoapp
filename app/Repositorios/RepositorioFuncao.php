@@ -120,7 +120,7 @@ class RepositorioFuncao implements IRepositorioFuncao{
         
         $tabela = "tb_funcao";
         $stringLog = "DELETE: ";
-        $stringSet .= ", ativo = '0'";
+        $stringSet = ", ativo = '0'";
         $stringLog .= " ativo: 1 : 0" ;
                
         $sql =  " UPDATE {$tabela} SET "
