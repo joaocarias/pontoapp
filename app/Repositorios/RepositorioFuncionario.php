@@ -147,4 +147,31 @@ class RepositorioFuncionario implements IRepositorioFuncionario {
         
         return $retorno;
     }
+
+    public function getFuncionariosComPis() {
+        $sql = " select * from tb_funcionario where pis is not null && pis != '' AND ativo = '1' ";
+        $obj = new Funcionario();
+        $array = array();
+        $dados = $obj->selectObj($sql);        
+        
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){
+                $obj = new Funcionario();
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);
+                $obj->setId_pessoa($row->id_pessoa);                
+                $obj->setModificado_por($row->modificado_por);
+                $obj->setId($row->id);
+                $obj->setPis($row->pis);                
+                $obj->setMatricula($row->matricula);
+                array_push($array, $obj);
+            }                
+            return $array;
+        }else{
+            return array();
+        }
+    }
+
 }

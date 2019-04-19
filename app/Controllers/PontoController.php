@@ -10,12 +10,16 @@ use App\Repositorios\RepositorioLotacao;
 use App\Repositorios\RepositorioFuncionario;    
 use App\Repositorios\RepositorioJornadaDeTrabalho;
 use App\Repositorios\RepositorioLotacaoJornadaDeTrabalho;
+use App\Repositorios\RepositorioRegistro;
+use App\Repositorios\RepositorioRegistroDePonto;
 
 use App\Models\Unidade;
 use App\Models\Lotacao;
 use App\Models\Funcionario;
 use App\Models\LotacaoJornadaDeTrabalho;
 use App\Models\JornadaDeTrabalho;
+use App\Models\Dimensionamento\Registro;
+use App\Models\RegistroDePonto;
 
 class PontoController extends Controller {
     public function index($request, $response){
@@ -33,6 +37,18 @@ class PontoController extends Controller {
     public function exportacao($request, $response){
        $controller = 'Ponto';
        $action = 'exportacao';
+       
+       $vars['action'] = $action;
+       $vars['controller'] = $controller;      
+       $_SESSION['controller'] = $controller;
+       $_SESSION['action'] = $action;     
+       
+       return $this->view->render($response, 'layout_dashboard.php', $vars);
+    }
+
+    public function importacao($request, $response){
+       $controller = 'Ponto';
+       $action = 'importacao';
        
        $vars['action'] = $action;
        $vars['controller'] = $controller;      
@@ -88,7 +104,31 @@ class PontoController extends Controller {
 
             $download = new DownloadTXT();
             $download->download($nomeArquivo);  
-        }
-       
+        }       
     }
+    
+    public function importar($request, $response){
+        $de = filter_input(INPUT_GET, "tx_de", FILTER_SANITIZE_STRING); 
+        $ate = filter_input(INPUT_GET, "tx_ate", FILTER_SANITIZE_STRING);
+        
+        $repoFuncionario = new RepositorioFuncionario();
+        $funcionarioAptos = $repoFuncionario->getFuncionariosComPis();
+        $repoRegistro = new RepositorioRegistro();
+                
+        foreach ($funcionarioAptos as $funcionario){
+            $registros = $repoRegistro->getRegistrosPorPis($funcionario->getPis(), $de, $ate);
+            foreach ($registros as $r){
+//                echo '<pre>';
+//                var_dump ($r);
+//                echo '</pre>';
+                $repoRegistroDePonto = new RepositorioRegistroDePonto();
+                $registroDePonto = new RegistroDePonto($r->getId_registro(), $r->getId_servidor()
+                        , $funcionario->getId(), $r->getDt_entrada(), $r->getDt_saida()
+                       , $r->getNsr_entrada(), $r->getNsr_saida()
+                        , $r->getIdrelogio_entrada(), $r->getIdrelogio_saida());
+                $retorno = $repoRegistroDePonto->insert($registroDePonto);
+            }
+        }
+    }
+    
 }

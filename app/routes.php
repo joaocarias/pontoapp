@@ -72,7 +72,9 @@ $app->post('/lotacaojornadadetrabalho/cadastrar','App\Controllers\LotacaoJornada
 $app->get('/ponto','App\Controllers\PontoController:index');
 $app->get('/ponto/index','App\Controllers\PontoController:index');
 $app->get('/ponto/exportacao','App\Controllers\PontoController:exportacao');
+$app->get('/ponto/importacao','App\Controllers\PontoController:importacao');
 $app->get('/ponto/exportar','App\Controllers\PontoController:exportar');
+$app->get('/ponto/importar','App\Controllers\PontoController:importar');
 
 
 }else{
