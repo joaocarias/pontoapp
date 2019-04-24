@@ -262,7 +262,7 @@ use bd_ponto_app;
 
 select * from tb_pessoa;
 select * from tb_usuario;
-
+drop table tb_registro_de_ponto;
 create table tb_registro_de_ponto
 (
 	id int(11) not null auto_increment,
@@ -271,22 +271,27 @@ create table tb_registro_de_ponto
     id_funcionario int(11) not null, 
     id_empresa int(11) not null,
     dt_entrada datetime,
-    dt_saida datetime,
-    tempo_atividade bigint,
-    ponto_em_aberto bit default 1,
+    dt_saida datetime null,
+    tempo_atividade bigint null,
+    ponto_em_aberto int(11) default 1,
     nsr_entrada int(11),
-    nsr_saida int(11),
+    nsr_saida int(11) null,
     id_relogio_entrada int(11),
-    id_relogio_saida int(11),
+    id_relogio_saida int(11) null,
+    obs varchar(1000),
   `dt_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
-  `criado_por` int(11) NOT NULL,
+  `criado_por` varchar(30) NULL,
   `dt_modificacao` datetime DEFAULT NULL,
   `modificado_por` int(11) DEFAULT NULL,
   `ativo` smallint(4) DEFAULT 1,
   PRIMARY KEY (`id`),
-  KEY `fk_criado_por_registro_de_ponto` (`criado_por`), 
-  CONSTRAINT `fk_criado_por_registro_de_ponto` FOREIGN KEY (`criado_por`) REFERENCES `tb_usuario` (`id_usuario`)
+  KEY `fk_id_funcionario_registro_de_ponto` (`id_funcionario`), 
+  KEY `fk_id_empresa_registro_de_ponto` (`id_empresa`),
+  CONSTRAINT `fk_id_funcionario_registro_de_ponto` FOREIGN KEY (`id_funcionario`) REFERENCES `tb_funcionario` (`id`),
+  CONSTRAINT `fk_id_empresa_registro_de_ponto` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+select * from tb_registro_de_ponto;
 
 use bd_ponto_app;
 
@@ -401,3 +406,15 @@ select * from tb_lotacao;
 select * from tb_funcionario;
 select * from tb_endereco;
 select * from tb_log_update;
+
+select * from tb_registro_de_ponto;
+
+use bd_ponto_app;
+
+select * from tb_funcionario where pis is not null && pis != "";
+select * from tb_registro_de_ponto;
+delete from tb_registro_de_ponto where id > 0;
+
+
+ INSERT INTO tb_registro_de_ponto ( id_registro, id_servidor, id_funcionario, dt_entrada, dt_saida, tempo_atividade, id_relogio_entrada, id_relogio_saida, criado_por, id_empresa )
+							VALUES ('431869', '2', '12', '2019-01-07 14:32:00', '2019-01-08 00:00:00', '0', '10', '0', '1', '1');

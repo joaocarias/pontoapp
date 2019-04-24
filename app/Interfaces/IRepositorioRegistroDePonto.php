@@ -4,5 +4,8 @@ namespace App\Interfaces;
 use App\Models\RegistroDePonto;
 
 interface IRepositorioRegistroDePonto {
-    public function insert(RegistroDePonto $registro);
+    public function insertEntrada(RegistroDePonto $registro);
+    public function insertSaida(RegistroDePonto $obj);
+    public function verificarInseridoEntrada($idRegistro);
+    public function verificarInseridoSaida($idRegistro, $pontoAberto, $idRelogioSaida);
 }

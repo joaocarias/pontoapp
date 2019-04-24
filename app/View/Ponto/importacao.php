@@ -21,21 +21,25 @@ use App\Models\Competencia;
     
     $_de = filter_input(INPUT_GET, "tx_de", FILTER_SANITIZE_STRING) ;    
     $_ate = filter_input(INPUT_GET, "tx_ate", FILTER_SANITIZE_STRING);
-    $_id_competencia = filter_input(INPUT_GET, "tx_id_competencia", FILTER_SANITIZE_STRING);    
+    $_id_competencia = filter_input(INPUT_GET, "tx_id_competencia", FILTER_SANITIZE_STRING);  
+    
+    $msg_tipo = filter_input(INPUT_GET, "msg_tipo", FILTER_SANITIZE_STRING);
+    $msg = filter_input(INPUT_GET, "msg", FILTER_SANITIZE_STRING);
     
     $repositorioCompetencia = new RepositorioCompetencia();
     
     $mes_atual = date('m');
     $ano_atual = date('Y');
+    $dia_atual = date('d');
     
     $_mes_competencia = $mes_atual;
     $_ano_competencia = $ano_atual;
     
     if(!$_de){
-        $_de = "2019-03-15";    
+        $_de = "{$ano_atual}-01-01";    
     }
-    if(!$_ate){
-        $_ate = "2019-04-14";
+    if(!$_ate){        
+        $_ate = "{$ano_atual}-{$mes_atual}-{$dia_atual}";
     }
     
     $competencia = new Competencia();
@@ -93,7 +97,19 @@ use App\Models\Competencia;
                           .Form::getInputButtonSubmit("buscar", "Realizar a Importação", "btn-success btn-sm")
                         
                   .Form::endForm(); 
-              ?>      
+                
+                      if($msg_tipo == "success"){
+                   
+                          ?>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Número de Atulizações: <?=$msg?> .
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <?php 
+                      }
+                      ?>
                   </div>
               </div>
           </div>

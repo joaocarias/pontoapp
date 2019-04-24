@@ -13,6 +13,7 @@ class RegistroDePonto extends Model {
     private $dt_saida;
     private $tempo_atividade;
     private $ponto_em_aberto;
+    private $obs;
     private $nsr_entrada;
     private $nsr_saida;
     private $id_relogio_entrada;
@@ -23,8 +24,8 @@ class RegistroDePonto extends Model {
     private $modificado_por;
     private $ativo;
     
-    function __construct($id_registro = null, $id_servidor  = null, $id_funcionario = null, $dt_entrada = null
-            , $dt_saida  = null, $ponto_em_aberto = null, $nsr_entrada = null, $nsr_saida = null
+    function __construct($id_registro = null, $id_servidor = null, $id_funcionario = null, $dt_entrada = null
+            , $dt_saida  = null, $ponto_em_aberto = null, $obs = null, $nsr_entrada = null, $nsr_saida = null
             , $id_relogio_entrada = null, $id_relogio_saida = null) {
         $this->id_registro = $id_registro;
         $this->id_servidor = $id_servidor;
@@ -36,6 +37,16 @@ class RegistroDePonto extends Model {
         $this->nsr_saida = $nsr_saida;
         $this->id_relogio_entrada = $id_relogio_entrada;
         $this->id_relogio_saida = $id_relogio_saida;
+        $this->obs = $obs;
+        
+    }
+    
+    function getObs() {
+        return $this->obs;
+    }
+
+    function setObs($obs) {
+        $this->obs = $obs;
     }
     
     function getId() {

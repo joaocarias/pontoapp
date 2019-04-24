@@ -6,22 +6,22 @@ use App\Models\RegistroDePonto;
 
 class RepositorioRegistroDePonto implements IRepositorioRegistroDePonto {
     
-    public function insert(RegistroDePonto $obj) {
+    public function insertEntrada(RegistroDePonto $obj) {
         $i = 0;
         $tabela = "tb_registro_de_ponto";
         
         $params = array(
-                "id_registro" => $obj->getId_registro() == null ? 0 : $obj->getId_registro(),
+                "id_registro" => $obj->getId_registro(),
                 "id_servidor" => $obj->getId_servidor(),
                 "id_funcionario" => $obj->getId_funcionario(),                
                 "dt_entrada" => $obj->getDt_entrada(),
-                "dt_saida" => $obj->getDt_saida(),
-                
-                
-                "nsr_entrada" => $obj->getNsr_entrada(),
-                "nsr_saida" => $obj->getNsr_saida(),
+               // "dt_saida" => $obj->getDt_saida() == "" ? null : $obj->getDt_saida() ,
+               // "ponto_em_aberto" => $obj->getPonto_em_aberto(),
+               // "tempo_atividade" => 0,
+                "nsr_entrada" => 1,
+               // "nsr_saida" => 1,
                 "id_relogio_entrada" => $obj->getId_relogio_entrada(),
-                "id_relogio_saida" => $obj->getId_relogio_saida(),            
+               // "id_relogio_saida" => $obj->getId_relogio_saida() == "" ? null : $obj->getId_relogio_saida(),            
                 "criado_por" => $_SESSION["id_usuario"],
                 "id_empresa" => $_SESSION['id_empresa']
             );
@@ -42,8 +42,66 @@ class RepositorioRegistroDePonto implements IRepositorioRegistroDePonto {
         $sql = " INSERT INTO {$tabela} ( {$colunas} ) "
         . "VALUES ({$valores}); ";
                 
+        var_dump($sql);
+        
         $arrayRetorno = $obj->insert($sql);
         return $arrayRetorno;
+    }
+    
+    public function insertSaida(RegistroDePonto $obj) {        
+        $tabela = "tb_registro_de_ponto";        
+        $stringSet = "";
+        
+        $stringSet .= " dt_saida = '{$obj->getDt_saida()}' ";
+        $stringSet .= ", tempo_atividade = '{$obj->getTempo_atividade()}' ";
+        $stringSet .= ", ponto_em_aberto = '{$obj->getPonto_em_aberto()}' ";
+        $stringSet .= is_null($obj->getDt_saida()) || $obj->getDt_saida() == '' ? "" : ", dt_saida = '{$obj->getDt_saida()}' ";
+        $stringSet .= ", nsr_saida = '{$obj->getNsr_saida()}' ";
+        $stringSet .= is_null($obj->getId_relogio_saida()) || $obj->getId_relogio_saida() == '' ? "" : ", id_relogio_saida = '{$obj->getId_relogio_saida()}' ";
+        
+        $sql =  " UPDATE {$tabela} SET "                
+                . " {$stringSet} "
+                . " WHERE id_registro = '{$obj->getId_registro()}' and ativo = '1'; ";            
+                                
+        $retorno = $obj->update($sql);                
+        return $retorno;
+    }
+
+    public function verificarInseridoEntrada($idRegistro) {
+        $sql = "select count(*) as cont from tb_registro_de_ponto
+                    where id_registro = '{$idRegistro}' and ativo = '1';";
+           
+        $obj = new RegistroDePonto();             
+        $dados = $obj->selectObj($sql);        
+        
+        $v = false;
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                if($row->cont > 0)
+                $v = true;                
+            }
+        }
+        
+        return $v;            
+    }
+
+    public function verificarInseridoSaida($idRegistro, $pontoAberto, $idRelogioSaida) {
+        $sql = "select count(*) as cont from tb_registro_de_ponto
+                    where id_registro = '{$idRegistro}' and ativo = '1' and ponto_em_aberto = '{$pontoAberto}'"
+                    . " and id_relogio_saida = '{$idRelogioSaida}' ;";
+           
+        $obj = new RegistroDePonto();             
+        $dados = $obj->selectObj($sql);        
+        
+        $v = false;
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                if($row->cont > 0)
+                $v = true;                
+            }
+        }
+        
+        return $v;
     }
 
 }

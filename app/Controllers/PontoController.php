@@ -115,20 +115,41 @@ class PontoController extends Controller {
         $funcionarioAptos = $repoFuncionario->getFuncionariosComPis();
         $repoRegistro = new RepositorioRegistro();
                 
+        $cont = 0;
         foreach ($funcionarioAptos as $funcionario){
             $registros = $repoRegistro->getRegistrosPorPis($funcionario->getPis(), $de, $ate);
             foreach ($registros as $r){
-//                echo '<pre>';
-//                var_dump ($r);
-//                echo '</pre>';
+                
                 $repoRegistroDePonto = new RepositorioRegistroDePonto();
-                $registroDePonto = new RegistroDePonto($r->getId_registro(), $r->getId_servidor()
-                        , $funcionario->getId(), $r->getDt_entrada(), $r->getDt_saida()
-                       , $r->getNsr_entrada(), $r->getNsr_saida()
-                        , $r->getIdrelogio_entrada(), $r->getIdrelogio_saida());
-                $retorno = $repoRegistroDePonto->insert($registroDePonto);
+                $registroDePonto = new RegistroDePonto(
+                        $r->getId_registro(), $r->getId_servidor(), $funcionario->getId(), $r->getDt_entrada()
+                        , $r->getDt_saida(), $r->getSt_ponto_aberto(), $r->getObs(), $r->getNsr_entrada(),
+                        $r->getNsr_saida(), $r->getIdrelogio_entrada(), $r->getIdrelogio_saida()
+                        );
+                if(!$repoRegistroDePonto->verificarInseridoEntrada($r->getId_registro())){                    
+                    $retorno = $repoRegistroDePonto->insertEntrada($registroDePonto);
+                    $cont++;
+                }
+                
+                if(($r->getDt_entrada() != $r->getDt_saida()) and (strtotime($r->getDt_entrada()) < strtotime($r->getDt_saida())) and $r->getDt_entrada() != '' and !is_null($r->getDt_entrada()) and $r->getDt_saida() != '' and !is_null($r->getDt_saida()) and ($r->getSt_ponto_aberto() == '0') and $r->getDt_saida() != '0000-00-00 00:00:00'){
+                    $dateStart = new \DateTime($r->getDt_entrada());
+                    $dateNow   = new \DateTime($r->getDt_saida());
+ 
+                    $dateDiff = $dateStart->diff($dateNow);
+                    $registroDePonto->setTempo_atividade(($dateDiff->h * 60) + $dateDiff->i);
+                }else{
+                    $registroDePonto->setTempo_atividade(0);                    
+                }
+                
+                if(!$repoRegistroDePonto->verificarInseridoSaida($r->getId_registro()
+                        , $r->getSt_ponto_aberto(), $r->getIdrelogio_saida())){
+                    $retorno = $repoRegistroDePonto->insertSaida($registroDePonto);
+                    $cont++;
+                } 
             }
         }
+        
+        return $this->response->withHeader("Location", "/ponto/importacao?msg_tipo=success&msg={$cont}");
     }
     
 }
