@@ -69,6 +69,8 @@ class PontoController extends Controller {
             $nomeArquivo = $idUnidade.".txt";
             $meuTexto = "";  
     
+            $repositorioRegistroDePonto = new RepositorioRegistroDePonto();
+            
             $repositorioUnidade = new RepositorioUnidade();
             $unidade = $repositorioUnidade->getObj($idUnidade);
 
@@ -87,12 +89,16 @@ class PontoController extends Controller {
                 $repositorioJornadaDeTrabalho = new RepositorioJornadaDeTrabalho();
                 $jornadaDeTrabalho = $repositorioJornadaDeTrabalho->getObj($lotacaoJornadaDeTrabalho->getId_jornada_de_trabalho());
                                              
-                $_hora_ponto = ($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId()))/60;
+                $_hora_ponto = intdiv($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId()), 60);
+                $_trabalhado_em_minutos = ($repositorioRegistroDePonto->getCargaTrabalhado($funcionario->getId(), $de, $ate));
+                $_trabalho_em_horas =  $_trabalhado_em_minutos > 0 ? intdiv($_trabalhado_em_minutos, 60) : 0;
+                
+                $trabalhado = $_hora_ponto > $_trabalho_em_horas ? $_hora_ponto - $_trabalho_em_horas : 0;
                 
                 if(!is_null($funcionario) && !is_null($funcionario->getMatricula()) && $funcionario->getMatricula() > 0 && $funcionario->getMatricula() <= 99999999 ){
                     $meuTexto = $meuTexto . str_pad($funcionario->getMatricula() , 8 , '0' , STR_PAD_LEFT) 
                         .$_ponto_evento
-                        .str_pad($_hora_ponto, 6, '0', STR_PAD_LEFT)
+                        .str_pad($trabalhado, 6, '0', STR_PAD_LEFT)
                         .$_ano_mes
                         ."\r\n";
                 }

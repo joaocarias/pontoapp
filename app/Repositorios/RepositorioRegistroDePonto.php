@@ -104,4 +104,23 @@ class RepositorioRegistroDePonto implements IRepositorioRegistroDePonto {
         return $v;
     }
 
+    public function getCargaTrabalhado($id_funcionario, $inicio, $fim) {
+        $sql = " select sum(tempo_atividade) as carga_trabalhada 
+                from tb_registro_de_ponto 
+                where id_funcionario = '{$id_funcionario}' and ativo = '1' and dt_entrada between '{$inicio}' and '{$fim}' ;" ;
+                
+        $obj = new RegistroDePonto();             
+        $dados = $obj->selectObj($sql);        
+        
+        $cargaTrabalhada = 0;
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){                        
+                if($row->carga_trabalhada)
+                $cargaTrabalhada = $row->carga_trabalhada ;                
+            }
+        }
+        
+        return $cargaTrabalhada;
+    }
+
 }

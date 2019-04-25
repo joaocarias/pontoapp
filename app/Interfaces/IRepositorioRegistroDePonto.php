@@ -8,4 +8,5 @@ interface IRepositorioRegistroDePonto {
     public function insertSaida(RegistroDePonto $obj);
     public function verificarInseridoEntrada($idRegistro);
     public function verificarInseridoSaida($idRegistro, $pontoAberto, $idRelogioSaida);
+    public function getCargaTrabalhado($id_funcionario, $inicio, $fim);
 }
