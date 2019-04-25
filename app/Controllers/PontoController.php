@@ -137,21 +137,21 @@ class PontoController extends Controller {
                     $cont++;
                 }
                 
-                if(($r->getDt_entrada() != $r->getDt_saida()) and (strtotime($r->getDt_entrada()) < strtotime($r->getDt_saida())) and $r->getDt_entrada() != '' and !is_null($r->getDt_entrada()) and $r->getDt_saida() != '' and !is_null($r->getDt_saida()) and ($r->getSt_ponto_aberto() == '0') and $r->getDt_saida() != '0000-00-00 00:00:00'){
-                    $dateStart = new \DateTime($r->getDt_entrada());
-                    $dateNow   = new \DateTime($r->getDt_saida());
- 
-                    $dateDiff = $dateStart->diff($dateNow);
-                    $registroDePonto->setTempo_atividade(($dateDiff->h * 60) + $dateDiff->i);
-                }else{
-                    $registroDePonto->setTempo_atividade(0);                    
-                }
-                
-                if(!$repoRegistroDePonto->verificarInseridoSaida($r->getId_registro()
-                        , $r->getSt_ponto_aberto(), $r->getIdrelogio_saida())){
-                    $retorno = $repoRegistroDePonto->insertSaida($registroDePonto);
-                    $cont++;
-                } 
+//                if(($r->getDt_entrada() != $r->getDt_saida()) and (strtotime($r->getDt_entrada()) < strtotime($r->getDt_saida())) and $r->getDt_entrada() != '' and !is_null($r->getDt_entrada()) and $r->getDt_saida() != '' and !is_null($r->getDt_saida()) and ($r->getSt_ponto_aberto() == '0') and $r->getDt_saida() != '0000-00-00 00:00:00'){
+//                    $dateStart = new \DateTime($r->getDt_entrada());
+//                    $dateNow   = new \DateTime($r->getDt_saida());
+// 
+//                    $dateDiff = $dateStart->diff($dateNow);
+//                    $registroDePonto->setTempo_atividade(($dateDiff->h * 60) + $dateDiff->i);
+//                }else{
+//                    $registroDePonto->setTempo_atividade(0);                    
+//                }
+//                
+//                if(!$repoRegistroDePonto->verificarInseridoSaida($r->getId_registro()
+//                        , $r->getSt_ponto_aberto(), $r->getIdrelogio_saida())){
+//                    $retorno = $repoRegistroDePonto->insertSaida($registroDePonto);
+//                    $cont++;
+//                } 
             }
         }
         

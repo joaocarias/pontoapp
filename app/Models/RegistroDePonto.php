@@ -27,16 +27,31 @@ class RegistroDePonto extends Model {
     function __construct($id_registro = null, $id_servidor = null, $id_funcionario = null, $dt_entrada = null
             , $dt_saida  = null, $ponto_em_aberto = null, $obs = null, $nsr_entrada = null, $nsr_saida = null
             , $id_relogio_entrada = null, $id_relogio_saida = null) {
+        
         $this->id_registro = $id_registro;
         $this->id_servidor = $id_servidor;
         $this->id_funcionario = $id_funcionario;
-        $this->dt_entrada = $dt_entrada;
-        $this->dt_saida = $dt_saida;
-        $this->ponto_em_aberto = $ponto_em_aberto;
-        $this->nsr_entrada = $nsr_entrada;
-        $this->nsr_saida = $nsr_saida;
-        $this->id_relogio_entrada = $id_relogio_entrada;
-        $this->id_relogio_saida = $id_relogio_saida;
+                
+        $this->dt_entrada = !is_null($dt_entrada) && $dt_entrada != '' ? $dt_entrada : '0000-00-00 00:00:00' ;
+        $this->dt_saida = !is_null($dt_saida) && $dt_saida != '' ? $dt_saida : '0000-00-00 00:00:00' ;
+        $this->ponto_em_aberto = !is_null($ponto_em_aberto) & $ponto_em_aberto != '' && ($ponto_em_aberto == 0 || $ponto_em_aberto == 1) ? $ponto_em_aberto : '0';
+        
+        if($this->dt_entrada != '0000-00-00 00:00:00' && $this->dt_saida != '0000-00-00 00:00:00' && (strtotime($this->dt_entrada) < strtotime($this->dt_saida)) && $this->ponto_em_aberto == 0 ){
+            $dateStart = new \DateTime($this->dt_entrada);
+            $dateNow   = new \DateTime($this->dt_saida);
+ 
+            $dateDiff = $dateStart->diff($dateNow);
+            $this->tempo_atividade = (($dateDiff->h * 60) + $dateDiff->i);
+        }else{
+            $this->tempo_atividade = 0;
+        }             
+        
+        $this->nsr_entrada = !is_null($nsr_entrada) && $nsr_entrada != '' && is_numeric($nsr_entrada) ? $nsr_entrada : '0';
+        $this->nsr_saida = !is_null($nsr_saida) && $nsr_saida != '' && is_numeric($nsr_saida) ? $nsr_saida : '0';
+        
+        $this->id_relogio_entrada = !is_null($id_relogio_entrada) && $id_relogio_entrada != '' && is_numeric($id_relogio_entrada) ? $id_relogio_entrada : '0';
+        $this->id_relogio_saida = !is_null($id_relogio_saida) && $id_relogio_saida != '' && is_numeric($id_relogio_saida) ? $id_relogio_saida : '0';
+   
         $this->obs = $obs;
         
     }
