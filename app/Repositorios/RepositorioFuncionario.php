@@ -122,6 +122,30 @@ class RepositorioFuncionario implements IRepositorioFuncionario {
             return new Funcionario();
         }
     }
+
+    public function getFuncionarioPorIdPessoa($id_pessoa) {
+        $sql = " SELECT * FROM tb_funcionario WHERE id_pessoa = '{$id_pessoa}' AND ativo = '1' ";
+        $obj = new Funcionario();
+
+        $dados = $obj->selectObj($sql);
+
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);
+                $obj->setId_pessoa($row->id_pessoa);
+                $obj->setModificado_por($row->modificado_por);
+                $obj->setId($row->id);
+                $obj->setPis($row->pis);
+                $obj->setMatricula($row->matricula);
+            }
+            return $obj;
+        }else{
+            return new Funcionario();
+        }
+    }
     
     public function excluir(Funcionario $obj){
         $tabela = "tb_funcionario";

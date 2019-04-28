@@ -40,6 +40,9 @@ class Strings {
         
         $ponto  = new ItemString('ponto','Ponto', 'far fa-clock', 'ponto','Ponto');
         $this->strings[$ponto->getId()] = $ponto;
+
+        $calendario  = new ItemString('calendario','Calendário', 'far fa-clock', 'calendario','Calendario');
+        $this->strings[$calendario->getId()] = $calendario;
                 
     }
     

@@ -11,4 +11,5 @@ interface IRepositorioFuncionario {
     public function getFuncionario($id): Funcionario;
     public function excluir(Funcionario $obj);
     public function getFuncionariosComPis();
+    public function getFuncionarioPorIdPessoa($id_pessoa);
 }

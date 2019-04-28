@@ -25,13 +25,15 @@ class MenuDashboard {
         $stringsObj = new Strings();
         $stringsArr = $stringsObj->getStrings();
 
+        $nome = explode(" ", $_SESSION['nome_pessoa']);
+
         return '<!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-      <div class="app-sidebar__user">
+      <div class="app-sidebar__user"  style="text-align: center">
           <!--<img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image">-->
         <div>
-            <p class="app-sidebar__user-name">'. $_SESSION['nome_pessoa'] .'</p>
+            <p class="app-sidebar__user-name">'. $nome[0]." ".$nome[1] .'</p>
           <p class="app-sidebar__user-designation">'. $_SESSION['cpf_pessoa'] .'</p>
         </div>
       </div>
@@ -40,6 +42,7 @@ class MenuDashboard {
         '.$this->getItem($stringsArr['dashboard']).'
         '.$this->getItem($stringsArr['funcionario']).'
         '.$this->getItem($stringsArr['ponto']).'
+        '.$this->getItem($stringsArr['calendario']).'
         '.$this->getItem($stringsArr['unidade']).'
         '.$this->getItem($stringsArr['funcao']).'
         '.$this->getItem($stringsArr['feriado']).'

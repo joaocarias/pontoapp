@@ -84,6 +84,30 @@ class RepositorioFeriado implements IRepositorioFeriado{
         }   
     }
 
+    public function getFeriado($data) {
+        $sql = " SELECT * FROM tb_feriado WHERE dt_feriado = '{$data}' AND ativo = '1' ";
+        $obj = new Feriado();
+
+        $dados = $obj->selectObj($sql);
+
+        if($dados["obj"]){
+            foreach ($dados["obj"] as $row){
+                $obj->setAtivo($row->ativo);
+                $obj->setCriado_por($row->criado_por);
+                $obj->setDt_criacao($row->dt_criacao);
+                $obj->setDt_modificacao($row->dt_modificacao);
+                $obj->setId_feriado($row->id_feriado);
+                $obj->setDt_feriado($row->dt_feriado);
+                $obj->setNome($row->nome);
+                $obj->setModificado_por($row->modificado_por);
+
+            }
+            return $obj;
+        }else{
+            return new Feriado();
+        }
+    }
+
     public function insertFeriado(Feriado $obj) {
         $i = 0;
         $tabela = "tb_feriado";

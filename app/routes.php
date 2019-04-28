@@ -76,7 +76,8 @@ $app->get('/ponto/importacao','App\Controllers\PontoController:importacao');
 $app->get('/ponto/exportar','App\Controllers\PontoController:exportar');
 $app->get('/ponto/importar','App\Controllers\PontoController:importar');
 
-
+$app->get('/calendario','App\Controllers\CalendarioController:index');
+$app->get('/calendario/index','App\Controllers\CalendarioController:index');
 }else{
     Header('Location', '/login');
 }
