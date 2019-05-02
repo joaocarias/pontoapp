@@ -238,6 +238,44 @@ public static function getSelectUF($nome, $label, $tamanho, $required, $value){
                     </div>';
         
     }
+
+    public static function getTxtArea($name, $label, $placeholder, $tamanho, $required, $value = null, $bloaquear = null, $rows = null, $maxlength = null){
+        if($required){
+            $obrigatorio = "required=required";
+            $descricao = "* Campo Obrigatório";
+        } else {
+            $obrigatorio = "";
+            $descricao = "";
+        }
+
+        if(($bloaquear) && (!is_null($bloaquear))){
+            $disabled = 'readonly';
+        }else{
+            $disabled = '';
+        }
+
+        if(($maxlength) && !(is_null($maxlength))){
+            $maxlength_ = 'maxlength="'.$maxlength.'"';
+        }else{
+            $maxlength_ = "";
+        }
+
+        if(($rows) && !(is_null($rows))){
+            $rows_ = 'rows="'.$rows.'"';
+        }else{
+            $rows_ = "";
+        }
+
+        return '    <div class="form-group '.$tamanho.'" style="padding-right: 15px; padding-left: 15px;">
+                          <label for="'.$name.'">'.$label.'</label>                          
+                            <textarea  id="'.$name.'" name="'.$name.'" '
+            . ' placeholder="'.$placeholder.'" class="form-control form-control-sm form-control-success" '.$obrigatorio.' '.$disabled.'
+                                     '.$maxlength_.' cols="70" '.$rows_.' >'.$value.'</textarea>
+                                <small class="form-text">'.$descricao.'</small>
+                          </div>
+                        ';
+
+    }
 }
 
 

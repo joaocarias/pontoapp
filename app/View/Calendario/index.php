@@ -3,7 +3,19 @@
  use Lib\SubNavPrimicipalDashboard;
   
     $subNav = new SubNavPrimicipalDashboard();
-            
+
+    $dia_hoje = date('d');
+    if($dia_hoje < "16"){
+        $mes_atual = date('m', strtotime('-1 Month', strtotime(date('Y-m-d'))));
+        $ano_atual = (int) date('Y', strtotime('-1 Month', strtotime(date('Y-m-d'))));
+
+    }
+    else{
+
+        $mes_atual = date('m');
+        $ano_atual = (int) date('Y');
+    }
+
     ?>
     <main class="app-content">
         
@@ -24,7 +36,7 @@
                   <span style="color: #33639d;">Ano: </span>
                   <select name="ano" id="ano" onchange="buscar_calendario();">
                       <?php
-                      $ano_atual = (int) date('Y');
+
                       $arr_ano = array(
                           '2014' => '2014',
                           '2015' => '2015',
@@ -46,7 +58,7 @@
                   <span style="color: #33639d; margin-left: 5px;">M&ecirc;s:</span>
                   <select name="mes" id="mes" onchange="buscar_calendario();">
                       <?php
-                      $mes_atual = date('m');
+
                       $arr_meses = array(
                           '01' => 'Janeiro',
                           '02' => 'Fevereiro',
@@ -70,48 +82,16 @@
                       ?>
 
                   </select>
-                  <span style="color: #33639d; margin-left: 5px;">Unidade:</span>
+                  <!-- <span style="color: #33639d; margin-left: 5px;">Unidade:</span> -->
                   <?php
                   //selecionarUnidadesVinculo($_SESSION['id_servidor']);
                   //echo $_SESSION['id_vinculo']
                   ?>
 
-                  <br><br><br>
-
-                  <table class="table table-sm table-bordered table-striped tabela_calendario">
-                      <tr>
-                          <th class="info_busca_primeiro">
-                              DATA ENTRADA
-                          </th>
-                          <th class="info_busca_meio">
-                              ENTRADA
-                          </th>
-                          <th class="info_busca_meio">
-                              DATA SA&Iacute;DA
-                          </th>
-                          <th class="info_busca_meio">
-                              SA&Iacute;DA
-                          </th>
-                          <th class="info_busca_meio">
-                              TRABALHADA
-                          </th>
-                          <th class="info_busca_meio">
-                              HORA JUSTIFICADA
-                          </th>
-                          <th class="info_busca_meio">
-                              STATUS
-                          </th>
-                          <th class="info_busca_ultima">
-                              JUSTIFICAR
-                          </th>
-                          <!--                <th class="info_busca_ultima">
-                                              JUSTIFICATIVA APROVADA
-                                          </th>-->
-                      </tr>
+                  <br>
 
                       <?php echo $calendario; ?>
 
-                  </table>
           </div>
         </div>
       </div>

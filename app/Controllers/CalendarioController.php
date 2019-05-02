@@ -37,37 +37,69 @@ class CalendarioController extends Controller {
        return $this->view->render($response, 'layout_dashboard.php', $vars);
     }
 
+    public function justificativa($request, $response){
+        $controller = 'Calendario';
+        $action = 'justificativa';
+
+        $vars['action'] = $action;
+        $vars['controller'] = $controller;
+        $_SESSION['controller'] = $controller;
+        $_SESSION['action'] = $action;
+
+        return $this->view->render($response, 'layout_dashboard.php', $vars);
+    }
+
     public function gerar_calendario($id_pessoa){
 
         $RepFuncionario = new RepositorioFuncionario();
         $id_funcionario = $RepFuncionario->getFuncionarioPorIdPessoa($id_pessoa)->getId();
 
-        $mes = date('m');
-        $ano = date('Y');
+        $dia_hoje = date('d');
+        if($dia_hoje < "16"){
+            $mes_ini = date('m', strtotime('-1 Month', strtotime(date('Y-m-d'))));
+            $ano_ini = date('Y', strtotime('-1 Month', strtotime(date('Y-m-d'))));
 
-        $dias_do_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
+            $mes_fim = date('m');
+            $ano_fim = date('Y');
+
+            $dias_do_mes = cal_days_in_month(CAL_GREGORIAN, $mes_ini, $ano_ini);
+        }
+        else{
+            $mes_fim = date('m', strtotime('+1 Month', strtotime(date('Y-m-d'))));
+            $ano_fim = date('Y', strtotime('+1 Month', strtotime(date('Y-m-d'))));
+
+            $mes_ini = date('m');
+            $ano_ini = date('Y');
+
+            $dias_do_mes = cal_days_in_month(CAL_GREGORIAN, $mes_ini, $ano_ini);
+        }
+
+
 
         //$dataLimite = getDataLimite($mes, $ano, 3);
         //$acao_justificar = verificarDataDentroDoPrazo($dataLimite);
 
         $repositorioRegistroDePonto = new RepositorioRegistroDePonto();
-        $array = $repositorioRegistroDePonto->getRegistrosDePonto($id_funcionario, $mes, $ano);
+        $array = $repositorioRegistroDePonto->getRegistrosDePonto($id_funcionario, $mes_ini, $ano_ini);
 
         $num_linhas = count($array);
 
-        //echo "Número de batidas = $num_linhas, ";
-
-        //print_r($array);
         $cont = 0;
+        $hrs_trabalhadas = 0;
         $tabela = "";
 
         $repositorioFeriado = new RepositorioFeriado();
-        $feriados = $repositorioFeriado->getFeriados($ano."-".$mes."-01", $ano."-".$mes."-".$dias_do_mes);
+        $feriados = $repositorioFeriado->getFeriados($ano_ini."-".$mes_ini."-16", $ano_fim."-".$mes_fim."-15");
 
-        for ($d = 1; $d <= $dias_do_mes; $d++) {
+        //print_r($feriados);
+
+        $d = 16;
+        $mes = $mes_ini;
+        $ano = $ano_ini;
+        while ($d <= $dias_do_mes) {
             $encontrado = 0;
             if ($d < 10) {
-                $dia = '0' . $d;
+                $dia = '0'.$d;
             } else {
                 $dia = $d;
             }
@@ -75,7 +107,7 @@ class CalendarioController extends Controller {
             $feriado = "";
             $diaSemana_ = $this->diaDaSemana($dia, $mes, $ano);
 
-            if($repositorioFeriado->verificaFeriado($ano."-".$mes."-".$d, $feriados)){
+            if($repositorioFeriado->verificaFeriado($ano."-".$mes."-".$dia, $feriados)){
                 if($cont % 2 == 0){
                     $info_busca = "info_busca_1";
                 }else{
@@ -83,7 +115,7 @@ class CalendarioController extends Controller {
                 }
                 //$feriado = "<tr class='".$info_busca."'><th style='height: 40px;'>FERIADO</th><td colspan='6' style=font-size: 9pt; font-weight: normal;'>"
                 //    . "". "teste" . "</td><td></td></tr>";
-                $feriado = $repositorioFeriado->getFeriado($ano."-".$mes."-".$d)->getNome();
+                $feriado = $repositorioFeriado->getFeriado($ano."-".$mes."-".$dia)->getNome();
             }
             else{
                 $i = 0;
@@ -120,7 +152,10 @@ class CalendarioController extends Controller {
 
                         if($array[$i]->tempo_atividade == "" || $array[$i]->ponto_em_aberto == 1 || $array[$i]->tempo_atividade == "0"){
                             $trabalhada_ = " --- ";
-                        }else{
+                        }
+                        else{
+                            $hrs_trabalhadas += $array[$i]->tempo_atividade;
+
                             $horas = floor($array[$i]->tempo_atividade / 60);
                             $minutos = $array[$i]->tempo_atividade % 60;
 
@@ -154,9 +189,9 @@ class CalendarioController extends Controller {
                             }else{
                                 $obs = "<td><tr class='".$info_busca."'><th style='height: 40px;'>AVISO</th><td colspan='6' style='font-size: 13pt; font-weight: normal; color: red;'><strong>". $array[$i]['obs'] . "</strong></td><td>". imprimirEditarJustificar($acao_justificar, $idServidor, $idVinculo, $dia, $mes, $ano)."</td></tr>";
                             }
-                        }else{
-                            $obs = "<td>". imprimirEditarJustificar($acao_justificar, $idServidor, $idVinculo, $dia, $mes, $ano)."</td></tr>";
-                        }*/
+                        }else{*/
+                            $obs = "<td>".$this->imprimeBtnJustificativa($dia, $mes, $ano)."</td></tr>";
+                        //}
 
 
                         $tabela .= "<tr class=".$info_busca.">"
@@ -181,9 +216,9 @@ class CalendarioController extends Controller {
             if($encontrado == 0){
                 if($feriado == ""){
                     if($cont % 2 == 0){
-                        $tabela .= '<tr class="info_busca_1"><td>' . $dia . '/' . $mes. '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td>' . $dia . '/' . $mes . '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td> --- </td><td> --- </td><td> --- </td><td>'. ''/*imprimirEditarJustificar($acao_justificar, $idServidor, $idVinculo, $dia, $mes, $ano)*/ .'</td></tr>';
+                        $tabela .= '<tr class="info_busca_1"><td>' . $dia . '/' . $mes. '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td>' . $dia . '/' . $mes . '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td> --- </td><td> --- </td><td> --- </td><td>'.$this->imprimeBtnJustificativa($dia, $mes, $ano).'</td></tr>';
                     }else{
-                        $tabela .= '<tr class="info_busca_2"><td>' . $dia . '/' . $mes. '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td>' . $dia . '/' . $mes . '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td> --- </td><td> --- </td><td> --- </td><td>'. ''/*imprimirEditarJustificar($acao_justificar, $idServidor, $idVinculo, $dia, $mes, $ano)*/.'</td></tr>';
+                        $tabela .= '<tr class="info_busca_2"><td>' . $dia . '/' . $mes. '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td>' . $dia . '/' . $mes . '/' . $ano . ' - ' . $diaSemana_ . '</td><td> --- </td><td> --- </td><td> --- </td><td> --- </td><td>'.$this->imprimeBtnJustificativa($dia, $mes, $ano).'</td></tr>';
                     }
                 }
                 else{
@@ -196,9 +231,91 @@ class CalendarioController extends Controller {
 
                 $cont++;
             }
+
+            if($d == 15){
+                break;
+            }
+            if($d == $dias_do_mes){
+                $dias_do_mes = 15;
+                $d = 1;
+                $mes = $mes_fim;
+                $ano = $ano_fim;
+            }
+            else{
+                $d++;
+            }
+        }
+        $horas = floor($hrs_trabalhadas / 60);
+        $minutos = $hrs_trabalhadas % 60;
+
+        if($minutos < 10){
+            $minutos = "0$minutos";
         }
 
-        return $tabela;
+        $hrs_trabalhadas = $horas."h $minutos"."min";
+
+
+        $html = "
+                <div style=\"margin-top: 10px; margin-bottom: 40px;\">
+                    <span style=\"color: darkgreen\">Total Final de Horas Contabilizadas (Trabalhada + Justificada):&nbsp; 
+                        
+                    </span>
+                    <br />
+                    <span style=\"color: darkblue\">Carga Hor&aacute;ria do m&ecirc;s:&nbsp; 
+                         </span>&nbsp;&nbsp;
+                    <br />
+                    <span>Total de horas Trabalhada:&nbsp; $hrs_trabalhadas
+                        </span>&nbsp;&nbsp;
+                    <br />
+                    <span style=\"color: darkorange\">Total de horas Justificadas:&nbsp; 
+                         
+                    </span>
+                    <br />
+                    <br />
+                    <span style=\"color: darkblue\">Data Limite para Justificar:&nbsp;
+                                               
+                            
+                         </span>&nbsp;&nbsp;
+                    <br />
+                </div>
+
+
+                    <table class=\"table table-sm table-bordered table-striped tabela_calendario\">
+                      <tr>
+                          <th class=\"info_busca_primeiro\">
+                              DATA ENTRADA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              ENTRADA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              DATA SA&Iacute;DA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              SA&Iacute;DA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              TRABALHADA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              HORA JUSTIFICADA
+                          </th>
+                          <th class=\"info_busca_meio\">
+                              STATUS
+                          </th>
+                          <th class=\"info_busca_ultima\">
+                              JUSTIFICAR
+                          </th>
+                          <!--                <th class=\"info_busca_ultima\">
+                                              JUSTIFICATIVA APROVADA
+                                          </th>-->
+                      </tr>
+
+                      $tabela
+
+                  </table>";
+
+        return $html;
     }
 
     private function diaDaSemana($dia, $mes, $ano) {
@@ -228,100 +345,22 @@ class CalendarioController extends Controller {
                 break;
         }
     }
-    
 
-    public function exportar($request, $response){
-        $idUnidade = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING); 
-        $de = filter_input(INPUT_GET, "de", FILTER_SANITIZE_STRING); 
-        $ate = filter_input(INPUT_GET, "ate", FILTER_SANITIZE_STRING);
-        $mes_competencia = filter_input(INPUT_GET, "mes_competencia", FILTER_SANITIZE_STRING);
-        $ano_competencia = filter_input(INPUT_GET, "ano_competencia", FILTER_SANITIZE_STRING);
-         
-        if($idUnidade){       
-            $nomeArquivo = $idUnidade.".txt";
-            $meuTexto = "";  
-    
-            $repositorioUnidade = new RepositorioUnidade();
-            $unidade = $repositorioUnidade->getObj($idUnidade);
+    private function imprimeBtnJustificativa($dia, $mes, $ano, $id = NULL){
+        $form = '<form action="calendario/justificativa" >
+                    <input type="hidden" name="dia" value="' . $dia . '">
+                    <input type="hidden" name="mes" value="' . $mes .'">
+                    <input type="hidden" name="ano" value="' . $ano . '">';
 
-            $repositorioLotacao = new RepositorioLotacao();
-            $lotacoes = $repositorioLotacao->getLotacaoPorUnidade($unidade->getId_unidade());
-
-            $_ponto_evento = "7010";            
-            $_ano_mes = "{$ano_competencia}".str_pad($mes_competencia, 2, '0', STR_PAD_LEFT);
-      
-            foreach($lotacoes as $lotacao){
-                $repositorioFuncionario = new RepositorioFuncionario();
-                $funcionario = $repositorioFuncionario->getFuncionario($lotacao->getId_funcionario());
-
-                $repositorioLotacaoJornadaDeTrabalho = new RepositorioLotacaoJornadaDeTrabalho();
-                $lotacaoJornadaDeTrabalho = $repositorioLotacaoJornadaDeTrabalho->getObjPorIdLotacao($lotacao->getId());
-                $repositorioJornadaDeTrabalho = new RepositorioJornadaDeTrabalho();
-                $jornadaDeTrabalho = $repositorioJornadaDeTrabalho->getObj($lotacaoJornadaDeTrabalho->getId_jornada_de_trabalho());
-                                             
-                $_hora_ponto = ($repositorioJornadaDeTrabalho->getCargaPeriodo($jornadaDeTrabalho->getId()))/60;
-                
-                if(!is_null($funcionario) && !is_null($funcionario->getMatricula()) && $funcionario->getMatricula() > 0 && $funcionario->getMatricula() <= 99999999 ){
-                    $meuTexto = $meuTexto . str_pad($funcionario->getMatricula() , 8 , '0' , STR_PAD_LEFT) 
-                        .$_ponto_evento
-                        .str_pad($_hora_ponto, 6, '0', STR_PAD_LEFT)
-                        .$_ano_mes
-                        ."\r\n";
-                }
-            }      
-
-            $fp = fopen("{$nomeArquivo}", "w");
-            fwrite($fp, "{$meuTexto}");
-            fclose($fp);
-
-            $download = new DownloadTXT();
-            $download->download($nomeArquivo);  
-        }       
-    }
-    
-    public function importar($request, $response){
-        $de = filter_input(INPUT_GET, "tx_de", FILTER_SANITIZE_STRING); 
-        $ate = filter_input(INPUT_GET, "tx_ate", FILTER_SANITIZE_STRING);
-        
-        $repoFuncionario = new RepositorioFuncionario();
-        $funcionarioAptos = $repoFuncionario->getFuncionariosComPis();
-        $repoRegistro = new RepositorioRegistro();
-                
-        $cont = 0;
-        foreach ($funcionarioAptos as $funcionario){
-            $registros = $repoRegistro->getRegistrosPorPis($funcionario->getPis(), $de, $ate);
-            foreach ($registros as $r){
-                
-                $repoRegistroDePonto = new RepositorioRegistroDePonto();
-                $registroDePonto = new RegistroDePonto(
-                        $r->getId_registro(), $r->getId_servidor(), $funcionario->getId(), $r->getDt_entrada()
-                        , $r->getDt_saida(), $r->getSt_ponto_aberto(), $r->getObs(), $r->getNsr_entrada(),
-                        $r->getNsr_saida(), $r->getIdrelogio_entrada(), $r->getIdrelogio_saida()
-                        );
-                if(!$repoRegistroDePonto->verificarInseridoEntrada($r->getId_registro())){                    
-                    $retorno = $repoRegistroDePonto->insertEntrada($registroDePonto);
-                    $cont++;
-                }
-                
-                if(($r->getDt_entrada() != $r->getDt_saida()) and (strtotime($r->getDt_entrada()) < strtotime($r->getDt_saida())) and $r->getDt_entrada() != '' and !is_null($r->getDt_entrada()) and $r->getDt_saida() != '' and !is_null($r->getDt_saida()) and ($r->getSt_ponto_aberto() == '0') and $r->getDt_saida() != '0000-00-00 00:00:00'){
-                    $dateStart = new \DateTime($r->getDt_entrada());
-                    $dateNow   = new \DateTime($r->getDt_saida());
- 
-                    $dateDiff = $dateStart->diff($dateNow);
-                    $registroDePonto->setTempo_atividade(($dateDiff->h * 60) + $dateDiff->i);
-                }else{
-                    $registroDePonto->setTempo_atividade(0);                    
-                }
-                
-                if(!$repoRegistroDePonto->verificarInseridoSaida($r->getId_registro()
-                        , $r->getSt_ponto_aberto(), $r->getIdrelogio_saida())){
-                    $retorno = $repoRegistroDePonto->insertSaida($registroDePonto);
-                    $cont++;
-                } 
-            }
+        if(!empty($id)){
+            $form .= '<input type="hidden" name="id" value="' . $id . '">';
         }
-        
-        return $this->response->withHeader("Location", "/ponto/importacao?msg_tipo=success&msg={$cont}");
+
+        $form .= '<button type="submit" class="btn btn-warning btn-small"><i class="fa fa-edit"></i></button>
+                 </form>
+                ';
+
+        return $form;
     }
     
 }
